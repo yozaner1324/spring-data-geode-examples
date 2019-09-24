@@ -3,7 +3,9 @@ package examples.springdata.geode.client.security.server;
 import examples.springdata.geode.client.security.server.config.SecurityEnabledServerConfiguration;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Scanner;
@@ -11,7 +13,10 @@ import java.util.Scanner;
 @SpringBootApplication(scanBasePackageClasses = SecurityEnabledServerConfiguration.class)
 public class SecurityEnabledServer {
     public static void main(String[] args) {
-        SpringApplication.run(SecurityEnabledServer.class, args);
+        new SpringApplicationBuilder(SecurityEnabledServer.class)
+                .web(WebApplicationType.NONE)
+                .build()
+                .run(args);
     }
 
     @Bean
