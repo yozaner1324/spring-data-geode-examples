@@ -20,7 +20,7 @@ import org.springframework.data.gemfire.eviction.EvictionPolicyType
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories
 import java.io.File
 
-@PeerCacheApplication(criticalHeapPercentage = 0.7f, evictionHeapPercentage = 0.4f, logLevel = "error")
+@PeerCacheApplication(evictionHeapPercentage = 0.4f, logLevel = "error")
 @EnableLocator
 @EnableEviction(policies = [EnableEviction.EvictionPolicy(regionNames = ["Orders"],
         maximum = 10,
@@ -75,6 +75,6 @@ class EvictionServerConfigKT {
                 dataPolicy = DataPolicy.REPLICATE
                 setName("Products")
                 setDiskStoreName("DiskStore")
-                setEvictionAttributes(EvictionAttributes.createLRUMemoryAttributes(10, ObjectSizer.DEFAULT, EvictionAction.OVERFLOW_TO_DISK))
+                setEvictionAttributes(EvictionAttributes.createLRUEntryAttributes(100, EvictionAction.OVERFLOW_TO_DISK))
             }
 }

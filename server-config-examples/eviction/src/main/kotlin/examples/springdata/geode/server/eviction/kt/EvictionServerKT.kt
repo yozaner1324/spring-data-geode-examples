@@ -25,6 +25,7 @@ class EvictionServerKT {
     }
 
     private fun createOrders(productRepository: ProductRepositoryKT, orderRepository: OrderRepositoryKT) {
+        println("Inserting 100 orders")
         createOrders(100, 300, 300, 5, orderRepository, productRepository)
     }
 

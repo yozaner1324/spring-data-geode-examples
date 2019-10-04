@@ -22,7 +22,7 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 import java.io.File;
 import java.util.Collections;
 
-@PeerCacheApplication(criticalHeapPercentage = 0.7f, evictionHeapPercentage = 0.4f, logLevel = "error")
+@PeerCacheApplication(evictionHeapPercentage = 0.4f, logLevel = "error")
 @EnableLocator
 @EnableEviction(policies = @EnableEviction.EvictionPolicy(regionNames = "Orders",
         maximum = 10,
@@ -85,9 +85,7 @@ public class EvictionServerConfig {
         replicatedRegionFactoryBean.setName("Products");
         replicatedRegionFactoryBean.setDiskStoreName("DiskStore");
         replicatedRegionFactoryBean.setEvictionAttributes(
-                EvictionAttributes.createLRUMemoryAttributes(10,
-                        ObjectSizer.DEFAULT,
-                        EvictionAction.OVERFLOW_TO_DISK));
+                EvictionAttributes.createLRUEntryAttributes(100, EvictionAction.OVERFLOW_TO_DISK));
         return replicatedRegionFactoryBean;
     }
 }
