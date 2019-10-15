@@ -5,10 +5,16 @@ import examples.springdata.geode.domain.Customer;
 import examples.springdata.geode.domain.Order;
 import examples.springdata.geode.domain.Product;
 import examples.springdata.geode.server.eviction.repo.CustomerRepository;
-import org.apache.geode.cache.*;
+import examples.springdata.geode.server.eviction.service.CustomerService;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.EvictionAction;
+import org.apache.geode.cache.EvictionAttributes;
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.Scope;
 import org.apache.geode.cache.util.ObjectSizer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.gemfire.DiskStoreFactoryBean;
 import org.springframework.data.gemfire.ReplicatedRegionFactoryBean;
@@ -22,13 +28,14 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 import java.io.File;
 import java.util.Collections;
 
-@PeerCacheApplication(evictionHeapPercentage = 0.4f, logLevel = "error")
+@PeerCacheApplication(criticalHeapPercentage = 0.7f, evictionHeapPercentage = 0.4f, logLevel = "error")
 @EnableLocator
 @EnableEviction(policies = @EnableEviction.EvictionPolicy(regionNames = "Orders",
         maximum = 10,
         action = EvictionActionType.LOCAL_DESTROY,
         type = EvictionPolicyType.ENTRY_COUNT))
 @EnableGemfireRepositories(basePackageClasses = CustomerRepository.class)
+@ComponentScan(basePackageClasses = CustomerService.class)
 public class EvictionServerConfig {
     @Bean
     public Faker faker() {

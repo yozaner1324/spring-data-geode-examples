@@ -3,10 +3,11 @@ package examples.springdata.geode.server.eviction;
 import examples.springdata.geode.domain.Customer;
 import examples.springdata.geode.domain.Order;
 import examples.springdata.geode.domain.Product;
-import examples.springdata.geode.server.eviction.repo.CustomerRepository;
-import examples.springdata.geode.server.eviction.repo.OrderRepository;
-import examples.springdata.geode.server.eviction.repo.ProductRepository;
+import examples.springdata.geode.server.eviction.service.CustomerService;
+import examples.springdata.geode.server.eviction.service.OrderService;
+import examples.springdata.geode.server.eviction.service.ProductService;
 import org.apache.geode.cache.Region;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = EvictionServer.class)
@@ -33,27 +34,32 @@ public class EvictionServerTest {
     private Region<Long, Order> orders;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Autowired
-    private ProductRepository productRepository;
+    private OrderService orderService;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private ProductService productService;
+
+    @Before
+    public void clearMemory() {
+        System.gc();
+    }
 
     @Test
     public void customerRepositoryWasAutoConfiguredCorrectly() {
-        assertThat(this.customerRepository.count()).isEqualTo(300);
+        assertThat(this.customerService.size()).isEqualTo(300);
     }
 
     @Test
     public void productRepositoryWasAutoConfiguredCorrectly() {
-        assertThat(this.productRepository.count()).isEqualTo(300);
+        assertThat(this.productService.size()).isEqualTo(300);
     }
 
     @Test
     public void orderRepositoryWasAutoConfiguredCorrectly() {
-        long numOrders = this.orderRepository.count();
+        long numOrders = this.orderService.size();
         System.out.println("There are " + numOrders + " orders in the Orders region");
         assertThat(numOrders).isEqualTo(10);
     }

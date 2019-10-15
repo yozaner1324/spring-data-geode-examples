@@ -3,11 +3,12 @@ package examples.springdata.geode.server.eviction.kt
 import examples.springdata.geode.domain.Customer
 import examples.springdata.geode.domain.Order
 import examples.springdata.geode.domain.Product
-import examples.springdata.geode.server.eviction.kt.repo.CustomerRepositoryKT
-import examples.springdata.geode.server.eviction.kt.repo.OrderRepositoryKT
-import examples.springdata.geode.server.eviction.kt.repo.ProductRepositoryKT
+import examples.springdata.geode.server.eviction.kt.service.CustomerServiceKT
+import examples.springdata.geode.server.eviction.kt.service.OrderServiceKT
+import examples.springdata.geode.server.eviction.kt.service.ProductServiceKT
 import org.apache.geode.cache.Region
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,27 +32,32 @@ class EvictionServerKTTest {
     lateinit var orders: Region<Long, Order>
 
     @Autowired
-    lateinit var customerRepository: CustomerRepositoryKT
+    lateinit var customerService: CustomerServiceKT
 
     @Autowired
-    lateinit var productRepository: ProductRepositoryKT
+    lateinit var productService: ProductServiceKT
 
     @Autowired
-    lateinit var orderRepository: OrderRepositoryKT
+    lateinit var orderService: OrderServiceKT
+
+    @Before
+    fun clearMemory() {
+        System.gc()
+    }
 
     @Test
     fun customerRepositoryWasAutoConfiguredCorrectly() {
-        assertThat(this.customerRepository.count()).isEqualTo(300)
+        assertThat(this.customerService.size()).isEqualTo(300)
     }
 
     @Test
     fun productRepositoryWasAutoConfiguredCorrectly() {
-        assertThat(this.productRepository.count()).isEqualTo(300)
+        assertThat(this.productService.size()).isEqualTo(300)
     }
 
     @Test
     fun orderRepositoryWasAutoConfiguredCorrectly() {
-        val numOrders = this.orderRepository.count()
+        val numOrders = this.orderService.size();
         println("There are $numOrders orders in the Orders region")
         assertThat(numOrders).isEqualTo(10)
     }
