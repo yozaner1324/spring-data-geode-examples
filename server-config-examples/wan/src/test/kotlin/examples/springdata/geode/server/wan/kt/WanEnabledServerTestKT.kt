@@ -1,4 +1,4 @@
-package examples.springdata.geode.server.wan.kt.server
+package examples.springdata.geode.server.wan.kt
 
 import examples.springdata.geode.domain.Customer
 import examples.springdata.geode.server.wan.kt.client.config.WanClientConfigKT
@@ -13,12 +13,10 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.concurrent.TimeUnit
 import javax.annotation.Resource
 
-@ActiveProfiles("wan-integration-test", "test", "default")
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = [WanClientConfigKT::class])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -38,8 +36,8 @@ class WanEnabledServerTestKT : ForkingClientServerIntegrationTestsSupport() {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            startGemFireServer(WanEnabledServerSiteBKT::class.java,"-Dspring.main.allow-bean-definition-overriding=true")
-            startGemFireServer(WanEnabledServerSiteAKT::class.java,"-Dspring.main.allow-bean-definition-overriding=true")
+            startGemFireServer(WanEnabledServerSiteBKT::class.java)
+            startGemFireServer(WanEnabledServerSiteAKT::class.java)
             System.getProperties().remove("spring.data.gemfire.pool.servers")
         }
     }

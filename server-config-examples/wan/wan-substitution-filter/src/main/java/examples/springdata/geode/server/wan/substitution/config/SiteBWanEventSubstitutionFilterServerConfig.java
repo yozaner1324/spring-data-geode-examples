@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package examples.springdata.geode.wan.substitution.config;
+package examples.springdata.geode.server.wan.substitution.config;
 
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.GemFireCache;

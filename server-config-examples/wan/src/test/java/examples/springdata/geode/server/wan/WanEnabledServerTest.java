@@ -1,4 +1,4 @@
-package examples.springdata.geode.server.wan.server;
+package examples.springdata.geode.server.wan;
 
 import examples.springdata.geode.domain.Customer;
 import examples.springdata.geode.server.wan.client.config.WanClientConfig;
@@ -13,14 +13,12 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-@ActiveProfiles({"wan-integration-test", "test", "default"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = WanClientConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -31,8 +29,8 @@ public class WanEnabledServerTest extends ForkingClientServerIntegrationTestsSup
 
     @BeforeClass
     public static void setup() throws IOException {
-        startGemFireServer(WanEnabledServerSiteB.class,"-Dspring.main.allow-bean-definition-overriding=true");
-        startGemFireServer(WanEnabledServerSiteA.class,"-Dspring.main.allow-bean-definition-overriding=true");
+        startGemFireServer(WanEnabledServerSiteB.class);
+        startGemFireServer(WanEnabledServerSiteA.class);
         System.getProperties().remove("spring.data.gemfire.pool.servers");
     }
 

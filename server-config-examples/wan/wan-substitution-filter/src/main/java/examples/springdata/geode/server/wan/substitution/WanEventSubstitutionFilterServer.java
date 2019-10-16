@@ -1,8 +1,8 @@
-package examples.springdata.geode.wan.substitution;
+package examples.springdata.geode.server.wan.substitution;
 
 import examples.springdata.geode.server.wan.repo.CustomerRepository;
 import examples.springdata.geode.util.DataCreatorsKt;
-import examples.springdata.geode.wan.substitution.config.WanEventSubstitutionFilterConfig;
+import examples.springdata.geode.server.wan.substitution.config.WanEventSubstitutionFilterConfig;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,6 +33,7 @@ public class WanEventSubstitutionFilterServer {
         return args -> {
             System.out.println("Inserting 300 customers");
             DataCreatorsKt.createCustomers(300, customerRepository);
+            new Scanner(System.in).nextLine();
         };
     }
 

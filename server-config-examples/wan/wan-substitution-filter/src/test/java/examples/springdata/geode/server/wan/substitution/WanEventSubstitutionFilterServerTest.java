@@ -1,4 +1,4 @@
-package examples.springdata.geode.wan.substitution;
+package examples.springdata.geode.server.wan.substitution;
 
 import examples.springdata.geode.domain.Customer;
 import examples.springdata.geode.server.wan.client.config.WanClientConfig;

@@ -1,7 +1,8 @@
-package examples.springdata.geode.wan.substitution.kt
+package examples.springdata.geode.server.wan.substitution.kt
 
 import examples.springdata.geode.domain.Customer
 import examples.springdata.geode.server.wan.client.config.WanClientConfig
+import examples.springdata.geode.wan.substitution.kt.WanEventSubstitutionFilterServerKT
 import org.apache.geode.cache.Region
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.Awaitility

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package examples.springdata.geode.wan.substitution.filter;
+package examples.springdata.geode.server.wan.substitution.filter;
 
 import org.apache.geode.cache.EntryEvent;
 import org.apache.geode.cache.wan.GatewayEventSubstitutionFilter;

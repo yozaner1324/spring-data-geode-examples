@@ -1,8 +1,8 @@
 package examples.springdata.geode.wan.substitution.kt
 
 import examples.springdata.geode.server.wan.kt.repo.CustomerRepositoryKT
+import examples.springdata.geode.server.wan.substitution.kt.config.WanEventSubstitutionFilterConfigKT
 import examples.springdata.geode.util.createCustomers
-import examples.springdata.geode.wan.substitution.kt.config.WanEventSubstitutionFilterConfigKT
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication

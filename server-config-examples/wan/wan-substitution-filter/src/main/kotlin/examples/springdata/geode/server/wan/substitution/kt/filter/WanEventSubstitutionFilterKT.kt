@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package examples.springdata.geode.wan.substitution.kt.filter
+package examples.springdata.geode.server.wan.substitution.kt.filter
 
 import examples.springdata.geode.domain.Customer
 import org.apache.geode.cache.EntryEvent
