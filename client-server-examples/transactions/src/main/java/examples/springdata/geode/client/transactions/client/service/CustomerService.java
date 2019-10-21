@@ -4,6 +4,7 @@ import examples.springdata.geode.client.transactions.client.repo.CustomerReposit
 import examples.springdata.geode.domain.Customer;
 import examples.springdata.geode.domain.EmailAddress;
 import org.apache.geode.cache.Region;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,9 @@ public class CustomerService {
     @Resource(name = "Customers")
     private Region<Long, Customer> customerRegion;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, @Qualifier("Customers") Region<Long, Customer> customerRegion) {
         this.customerRepository = customerRepository;
+        this.customerRegion = customerRegion;
     }
 
     private CustomerRepository getCustomerRepository() {

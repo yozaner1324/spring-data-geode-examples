@@ -3,6 +3,7 @@ package examples.springdata.geode.client.entityregion.client.service;
 import examples.springdata.geode.client.entityregion.client.repo.CustomerRepository;
 import examples.springdata.geode.domain.Customer;
 import org.apache.geode.cache.Region;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,8 +17,9 @@ public class CustomerService {
     @Resource(name = "Customers")
     private Region<Long, Customer> customerRegion;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, @Qualifier("Customers") Region<Long, Customer> customerRegion) {
         this.customerRepository = customerRepository;
+        this.customerRegion = customerRegion;
     }
 
     private CustomerRepository getCustomerRepository() {

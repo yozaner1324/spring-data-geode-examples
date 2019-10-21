@@ -3,11 +3,11 @@ package examples.springdata.geode.functions.cascading.server.functions;
 import examples.springdata.geode.domain.Customer;
 import examples.springdata.geode.domain.Order;
 import org.apache.geode.cache.Region;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.gemfire.function.annotation.GemfireFunction;
 import org.springframework.data.gemfire.function.annotation.RegionData;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,8 +15,11 @@ import java.util.stream.Collectors;
 @Component
 public class CascadingFunctions {
 
-    @Resource(name = "Orders")
     private Region<Long, Order> orderData;
+
+    public CascadingFunctions(@Qualifier("Orders") Region<Long, Order> orderData) {
+        this.orderData = orderData;
+    }
 
     @GemfireFunction(id = "ListAllCustomers", HA = true, optimizeForWrite = false, batchSize = 0, hasResult = true)
     public List<Long> listAllCustomers(@RegionData Map<Long, Customer> customerData) {
