@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>spring-data-geode-examples</artifactId>
-        <groupId>examples.springdata.geode</groupId>
+        <groupId>example.springdata.geode</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>examples.springdata.geode.client</groupId>
+    <groupId>example.springdata.geode.client</groupId>
     <artifactId>client-server-examples</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -29,7 +29,7 @@
 
     <properties>
         <server.class>Server</server.class>
-        <server.kt.class>examples.springdata.geode.client.common.kt.server.ServerKTKt</server.kt.class>
+        <server.kt.class>example.springdata.geode.client.common.kt.server.ServerKTKt</server.kt.class>
         <client.class>client.class</client.class>
         <client.kt.class>client.kt.class</client.kt.class>
     </properties>
@@ -57,7 +57,7 @@
             <version>1.2.3</version>
         </dependency>
         <dependency>
-            <groupId>examples.springdata.geode.domain</groupId>
+            <groupId>example.springdata.geode.domain</groupId>
             <artifactId>common-domain-models</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

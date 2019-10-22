@@ -4,17 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>client-server-examples</artifactId>
-        <groupId>examples.springdata.geode.client</groupId>
+        <groupId>example.springdata.geode.client</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>examples.springdata.geode.client</groupId>
+    <groupId>example.springdata.geode.client</groupId>
     <artifactId>continuous-queries</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>examples.springdata.geode.client</groupId>
+            <groupId>example.springdata.geode.client</groupId>
             <artifactId>common-client-utilities</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -27,13 +27,13 @@
     </dependencies>
 
     <properties>
-        <client.consumer.class>examples.springdata.geode.client.cq.consumer.CQConsumerClient
+        <client.consumer.class>example.springdata.geode.client.cq.consumer.CQConsumerClient
         </client.consumer.class>
-        <client.producer.class>examples.springdata.geode.client.cq.producer.CQProducerClient
+        <client.producer.class>example.springdata.geode.client.cq.producer.CQProducerClient
         </client.producer.class>
-        <client.consumer.kt.class>examples.springdata.geode.cq.kt.client.consumer.CQConsumerClientKTKt
+        <client.consumer.kt.class>example.springdata.geode.cq.kt.client.consumer.CQConsumerClientKTKt
         </client.consumer.kt.class>
-        <client.producer.kt.class>examples.springdata.geode.cq.kt.client.producer.CQProducerClientKTKt
+        <client.producer.kt.class>example.springdata.geode.cq.kt.client.producer.CQProducerClientKTKt
         </client.producer.kt.class>
     </properties>
 

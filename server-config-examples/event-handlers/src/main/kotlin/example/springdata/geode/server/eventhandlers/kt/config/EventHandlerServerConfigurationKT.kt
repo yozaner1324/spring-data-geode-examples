@@ -1,0 +1,53 @@
+package example.springdata.geode.server.eventhandlers.kt.config
+
+import example.springdata.geode.domain.Customer
+import example.springdata.geode.domain.Product
+import example.springdata.geode.server.eventhandlers.kt.repo.CustomerRepositoryKT
+import example.springdata.geode.util.LoggingCacheListener
+import org.apache.geode.cache.*
+import org.springframework.context.annotation.Bean
+import org.springframework.data.gemfire.PartitionedRegionFactoryBean
+import org.springframework.data.gemfire.ReplicatedRegionFactoryBean
+import org.springframework.data.gemfire.config.annotation.PeerCacheApplication
+import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories
+
+@PeerCacheApplication(logLevel = "error")
+@EnableGemfireRepositories(basePackageClasses = [CustomerRepositoryKT::class])
+class EventHandlerServerConfigurationKT {
+
+    @Bean
+    fun loggingCacheListener(): CacheListener<*, *> = LoggingCacheListener<Any, Any>()
+
+    @Bean
+    fun customerCacheWriter(): CacheWriter<Long, Customer> = CustomerCacheWriterKT()
+
+    @Bean
+    fun productCacheLoader(): CacheLoader<Long, Product> = ProductCacheLoaderKT()
+
+    @Bean("Products")
+    fun createProductRegion(gemFireCache: GemFireCache, loggingCacheListener: CacheListener<*, *>,
+                                     productCacheLoader: CacheLoader<Long, Product>): ReplicatedRegionFactoryBean<Long, Product> {
+        return ReplicatedRegionFactoryBean<Long, Product>()
+                .apply {
+                    cache = gemFireCache
+                    setRegionName("Products")
+                    dataPolicy = DataPolicy.REPLICATE
+                    setCacheListeners(arrayOf(loggingCacheListener as CacheListener<Long, Product>))
+                    setCacheLoader(productCacheLoader)
+                }
+    }
+
+    @Bean("Customers")
+    fun createCustomerRegion(gemFireCache: GemFireCache,
+                                      customerCacheWriter: CacheWriter<Long, Customer>,
+                                      loggingCacheListener: CacheListener<*, *>): PartitionedRegionFactoryBean<Long, Customer> {
+        return PartitionedRegionFactoryBean<Long, Customer>()
+                .apply {
+                    cache = gemFireCache
+                    setRegionName("Customers")
+                    dataPolicy = DataPolicy.PARTITION
+                    setCacheListeners(arrayOf(loggingCacheListener as CacheListener<Long, Customer>))
+                    setCacheWriter(customerCacheWriter)
+                }
+    }
+}

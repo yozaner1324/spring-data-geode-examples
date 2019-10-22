@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>client-server-examples</artifactId>
-        <groupId>examples.springdata.geode.client</groupId>
+        <groupId>example.springdata.geode.client</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -15,13 +15,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>examples.springdata.geode.domain</groupId>
+            <groupId>example.springdata.geode.domain</groupId>
             <artifactId>common-domain-models</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>examples.springdata.geode.domain</groupId>
+            <groupId>example.springdata.geode.domain</groupId>
             <artifactId>common-domain-models</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>

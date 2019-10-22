@@ -1,0 +1,33 @@
+package example.springdata.geode.client.function.client.services;
+
+import example.springdata.geode.client.function.client.repo.ProductRepository;
+import example.springdata.geode.client.function.client.functions.ProductFunctionExecutions;
+import example.springdata.geode.domain.Product;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+    private final ProductFunctionExecutions productFunctionExecutions;
+
+    public ProductService(ProductRepository productRepository, ProductFunctionExecutions productFunctionExecutions) {
+        this.productRepository = productRepository;
+        this.productFunctionExecutions = productFunctionExecutions;
+    }
+
+    public void save(Product product) {
+        productRepository.save(product);
+    }
+
+    public List<BigDecimal> sumPricesForAllProducts() {
+        return productFunctionExecutions.sumPricesForAllProducts();
+    }
+
+    public Product findById(Long productId) {
+        return productRepository.findById(productId).get();
+    }
+}

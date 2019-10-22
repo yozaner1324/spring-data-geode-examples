@@ -1,0 +1,41 @@
+package example.springdata.geode.server.wan.kt.server.siteA
+
+import com.github.javafaker.Faker
+import example.springdata.geode.domain.Customer
+import example.springdata.geode.domain.EmailAddress
+import example.springdata.geode.server.wan.kt.repo.CustomerRepositoryKT
+import example.springdata.geode.server.wan.kt.server.siteA.config.SiteAWanEnabledServerConfigKT
+import org.springframework.boot.ApplicationRunner
+import org.springframework.boot.WebApplicationType
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.context.annotation.Bean
+import java.util.*
+
+@SpringBootApplication(scanBasePackageClasses = [SiteAWanEnabledServerConfigKT::class])
+class WanEnabledServerSiteAKT {
+    @Bean
+    fun siteARunner(customerRepository: CustomerRepositoryKT, faker: Faker) = ApplicationRunner {
+        createCustomerData(customerRepository,faker)
+        Scanner(System.`in`).nextLine()
+    }
+
+    private fun createCustomerData(customerRepository: CustomerRepositoryKT, faker: Faker) {
+        println("Inserting 301 entries on siteA")
+        (0..300L).forEach { customerId ->
+            customerRepository.save(
+                    Customer(customerId,
+                            EmailAddress(faker.internet().emailAddress()), faker.name().firstName(), faker.name().lastName()))
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            SpringApplicationBuilder(WanEnabledServerSiteAKT::class.java)
+                    .web(WebApplicationType.NONE)
+                    .build()
+                    .run(*args)
+        }
+    }
+}
