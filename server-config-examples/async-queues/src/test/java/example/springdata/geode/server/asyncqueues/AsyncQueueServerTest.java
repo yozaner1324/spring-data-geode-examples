@@ -1,9 +1,9 @@
 package example.springdata.geode.server.asyncqueues;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.OrderProductSummary;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.asyncqueues.domain.Customer;
+import example.springdata.geode.server.asyncqueues.domain.Order;
+import example.springdata.geode.server.asyncqueues.domain.OrderProductSummary;
+import example.springdata.geode.server.asyncqueues.domain.Product;
 import example.springdata.geode.server.asyncqueues.repo.CustomerRepository;
 import example.springdata.geode.server.asyncqueues.repo.OrderProductSummaryRepository;
 import example.springdata.geode.server.asyncqueues.repo.OrderRepository;

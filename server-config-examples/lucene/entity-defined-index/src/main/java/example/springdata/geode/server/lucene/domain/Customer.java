@@ -1,6 +1,5 @@
 package example.springdata.geode.server.lucene.domain;
 
-import example.springdata.geode.domain.EmailAddress;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.mapping.annotation.LuceneIndexed;
 import org.springframework.data.gemfire.mapping.annotation.PartitionRegion;

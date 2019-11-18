@@ -2,7 +2,6 @@ package example.springdata.geode.server.expiration.entity.config;
 
 import com.github.javafaker.Faker;
 import example.springdata.geode.server.expiration.entity.domain.Customer;
-import example.springdata.geode.server.expiration.entity.domain.Customer;
 import example.springdata.geode.server.expiration.entity.repo.CustomerRepository;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;

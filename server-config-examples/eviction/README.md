@@ -20,3 +20,5 @@ Your test output should contain output similar to the following:
     Inserting 100 orders
 
     There are 10 orders in the Orders region
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

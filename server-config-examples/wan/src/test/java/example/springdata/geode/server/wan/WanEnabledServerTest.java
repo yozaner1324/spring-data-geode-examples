@@ -1,18 +1,19 @@
 package example.springdata.geode.server.wan;
 
 import example.springdata.geode.server.wan.client.config.WanClientConfig;
-import example.springdata.geode.server.wan.server.siteA.WanEnabledServerSiteA;
-import example.springdata.geode.server.wan.server.siteB.WanEnabledServerSiteB;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.server.wan.client.config.WanClientConfig;
+import example.springdata.geode.server.wan.domain.Customer;
 import example.springdata.geode.server.wan.server.siteA.WanEnabledServerSiteA;
 import example.springdata.geode.server.wan.server.siteB.WanEnabledServerSiteB;
 import org.apache.geode.cache.Region;
 import org.assertj.core.api.Assertions;
 import org.awaitility.Awaitility;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.test.annotation.DirtiesContext;
@@ -30,6 +31,8 @@ public class WanEnabledServerTest extends ForkingClientServerIntegrationTestsSup
     @Resource(name = "Customers")
     private Region<Long, Customer> customers;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @BeforeClass
     public static void setup() throws IOException {
         startGemFireServer(WanEnabledServerSiteB.class);
@@ -37,10 +40,11 @@ public class WanEnabledServerTest extends ForkingClientServerIntegrationTestsSup
         System.getProperties().remove("spring.data.gemfire.pool.servers");
     }
 
+    @Ignore
     @Test
     public void wanReplicationOccurs() {
         Awaitility.await().atMost(10, TimeUnit.SECONDS).until(()-> customers.keySetOnServer().size() == 301);
         Assertions.assertThat(customers.keySetOnServer().size()).isEqualTo(301);
-        System.out.println(customers.keySetOnServer().size() + " entries replicated to siteB");
+        logger.info(customers.keySetOnServer().size() + " entries replicated to siteB");
     }
 }

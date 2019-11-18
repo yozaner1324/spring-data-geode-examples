@@ -1,10 +1,11 @@
 package example.springdata.geode.server.wan.kt.server.siteA
 
 import com.github.javafaker.Faker
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.EmailAddress
+import example.springdata.geode.server.wan.kt.domain.Customer
+import example.springdata.geode.server.wan.kt.domain.EmailAddress
 import example.springdata.geode.server.wan.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.wan.kt.server.siteA.config.SiteAWanEnabledServerConfigKT
+import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -14,6 +15,9 @@ import java.util.*
 
 @SpringBootApplication(scanBasePackageClasses = [SiteAWanEnabledServerConfigKT::class])
 class WanEnabledServerSiteAKT {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @Bean
     fun siteARunner(customerRepository: CustomerRepositoryKT, faker: Faker) = ApplicationRunner {
         createCustomerData(customerRepository,faker)
@@ -21,7 +25,7 @@ class WanEnabledServerSiteAKT {
     }
 
     private fun createCustomerData(customerRepository: CustomerRepositoryKT, faker: Faker) {
-        println("Inserting 301 entries on siteA")
+        logger.info("Inserting 301 entries on siteA")
         (0..300L).forEach { customerId ->
             customerRepository.save(
                     Customer(customerId,

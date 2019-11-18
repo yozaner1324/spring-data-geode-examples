@@ -1,16 +1,19 @@
 package example.springdata.geode.client.oql;
 
-import example.springdata.geode.client.common.server.Server;
-import example.springdata.geode.client.oql.config.OQLClientApplicationConfig;
-import example.springdata.geode.client.oql.services.CustomerService;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.EmailAddress;
+import example.springdata.geode.client.oql.client.config.OQLClientApplicationConfig;
+import example.springdata.geode.client.oql.client.repo.CustomerRepository;
+import example.springdata.geode.client.oql.domain.Customer;
+import example.springdata.geode.client.oql.domain.EmailAddress;
+import example.springdata.geode.client.oql.server.Server;
 import org.apache.geode.cache.Region;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
 import org.springframework.data.gemfire.util.RegionUtils;
 import org.springframework.test.annotation.DirtiesContext;
@@ -20,7 +23,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = OQLClientApplicationConfig.class)
@@ -28,10 +31,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OQLClientTest extends ForkingClientServerIntegrationTestsSupport {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerRepository customerRepository;
 
     @Resource(name = "Customers")
     private Region<Long, Customer> customers;
+
+    @Autowired
+    private GemfireTemplate customerTemplate;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @BeforeClass
     public static void setup() throws IOException {
@@ -39,9 +47,9 @@ public class OQLClientTest extends ForkingClientServerIntegrationTestsSupport {
     }
 
     @Test
-    public void customerServiceWasConfiguredCorrectly() {
+    public void customerRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.customerService).isNotNull();
+        assertThat(this.customerRepository).isNotNull();
     }
 
     @Test
@@ -56,44 +64,40 @@ public class OQLClientTest extends ForkingClientServerIntegrationTestsSupport {
     @Test
     public void customerRepositoryWasAutoConfiguredCorrectly() {
 
-        System.out.println("Inserting 3 entries for keys: 1, 2, 3");
+        logger.info("Inserting 3 entries for keys: 1, 2, 3");
         Customer john = new Customer(1L, new EmailAddress("2@2.com"), "John", "Smith");
         Customer frank = new Customer(2L, new EmailAddress("3@3.com"), "Frank", "Lamport");
         Customer jude = new Customer(3L, new EmailAddress("5@5.com"), "Jude", "Simmons");
-        customerService.save(john);
-        customerService.save(frank);
-        customerService.save(jude);
+        customerRepository.save(john);
+        customerRepository.save(frank);
+        customerRepository.save(jude);
         assertThat(customers.keySetOnServer().size()).isEqualTo(3);
 
-        Customer customer = customerService.findById(2L).get();
+        Customer customer = customerRepository.findById(2L).get();
         assertThat(customer).isEqualTo(frank);
-        System.out.println("Find customer with key=2 using GemFireRepository: " + customer);
-        List customerList = customerService.findWithTemplate("select * from /Customers where id=$1", 2L);
+        logger.info("Find customer with key=2 using GemFireRepository: " + customer);
+        List customerList = customerTemplate.find("select * from /Customers where id=$1", 2L).asList();
         assertThat(customerList.size()).isEqualTo(1);
         assertThat(customerList.contains(frank)).isTrue();
-        System.out.println("Find customer with key=2 using GemFireTemplate: " + customerList);
+        logger.info("Find customer with key=2 using GemFireTemplate: " + customerList);
 
         customer = new Customer(1L, new EmailAddress("3@3.com"), "Jude", "Smith");
-        customerService.save(customer);
+        customerRepository.save(customer);
         assertThat(customers.keySetOnServer().size()).isEqualTo(3);
 
-        customerList = customerService.findByEmailAddress("3@3.com");
+        customerList = customerRepository.findByEmailAddressUsingIndex("3@3.com");
         assertThat(customerList.size()).isEqualTo(2);
         assertThat(customerList.contains(frank)).isTrue();
         assertThat(customerList.contains(customer)).isTrue();
-        System.out.println("Find customers with emailAddress=3@3.com: " + customerList);
+        logger.info("Find customers with emailAddress=3@3.com: " + customerList);
 
-        customerList = customerService.findByFirstNameUsingIndex("Frank");
+        customerList = customerRepository.findByFirstNameUsingIndex("Frank");
         assertThat(customerList.get(0)).isEqualTo(frank);
-        System.out.println("Find customers with firstName=Frank: " + customerList);
-        customerList = customerService.findByFirstNameUsingIndex("Jude");
+        logger.info("Find customers with firstName=Frank: " + customerList);
+        customerList = customerRepository.findByFirstNameUsingIndex("Jude");
         assertThat(customerList.size()).isEqualTo(2);
         assertThat(customerList.contains(jude)).isTrue();
         assertThat(customerList.contains(customer)).isTrue();
-        System.out.println("Find customers with firstName=Jude: " + customerList);
-
-        customerList = customerService.findByFirstNameLocalClientRegion("select * from /Customers where firstName=$1", "Jude");
-        assertThat(customerList).isEmpty();
-        System.out.println("Find customers with firstName=Jude on local client region: " + customerList);
+        logger.info("Find customers with firstName=Jude: " + customerList);
     }
 }

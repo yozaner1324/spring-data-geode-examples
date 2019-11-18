@@ -1,11 +1,9 @@
 package example.springdata.geode.functions.cascading.kt.server
 
 import example.springdata.geode.functions.cascading.kt.server.config.CascadingFunctionServerConfigKT
-import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
-import org.springframework.context.annotation.Bean
 
 @SpringBootApplication(scanBasePackageClasses = [CascadingFunctionServerConfigKT::class])
 class CascadingFunctionServerKT {
@@ -27,10 +25,5 @@ class CascadingFunctionServerKT {
                 } else {
                     "default"
                 }
-    }
-
-    @Bean
-    fun runner() = ApplicationRunner {
-        readLine()
     }
 }

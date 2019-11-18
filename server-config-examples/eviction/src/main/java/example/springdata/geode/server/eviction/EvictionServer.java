@@ -1,18 +1,35 @@
 package example.springdata.geode.server.eviction;
 
+import com.github.javafaker.Commerce;
+import com.github.javafaker.Faker;
 import example.springdata.geode.server.eviction.config.EvictionServerConfig;
+import example.springdata.geode.server.eviction.domain.Address;
+import example.springdata.geode.server.eviction.domain.Customer;
+import example.springdata.geode.server.eviction.domain.EmailAddress;
+import example.springdata.geode.server.eviction.domain.LineItem;
+import example.springdata.geode.server.eviction.domain.Order;
+import example.springdata.geode.server.eviction.domain.Product;
 import example.springdata.geode.server.eviction.repo.CustomerRepository;
 import example.springdata.geode.server.eviction.repo.OrderRepository;
 import example.springdata.geode.server.eviction.repo.ProductRepository;
-import example.springdata.geode.util.DataCreatorsKt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
+import java.math.BigDecimal;
+import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+
 @SpringBootApplication(scanBasePackageClasses = EvictionServerConfig.class)
 public class EvictionServer {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     public static void main(String[] args) {
         new SpringApplicationBuilder(EvictionServer.class).web(WebApplicationType.NONE).build().run(args);
     }
@@ -29,17 +46,33 @@ public class EvictionServer {
     }
 
     private void createOrders(ProductRepository productRepository, OrderRepository orderRepository) {
-        System.out.println("Inserting 100 orders");
-        DataCreatorsKt.createOrders(100, 300, 300, 5, orderRepository, productRepository);
+        Random random = new Random(System.nanoTime());
+        Address address = new Address("it", "doesn't", "matter");
+        LongStream.rangeClosed(1, 10).forEach((orderId) ->
+                LongStream.rangeClosed(1, 300).forEach((customerId) -> {
+                    Order order = new Order(orderId, customerId, address);
+                    IntStream.rangeClosed(0, random.nextInt(3) + 1).forEach((lineItemCount) -> {
+                        int quantity = random.nextInt(3) + 1;
+                        long productId = random.nextInt(3) + 1;
+                        order.add(new LineItem(productRepository.findById(productId).get(), quantity));
+                    });
+                    orderRepository.save(order);
+                }));
     }
 
     private void createProducts(ProductRepository productRepository) {
-        System.out.println("Inserting 300 products");
-        DataCreatorsKt.createProducts(300, productRepository);
+        Faker faker = new Faker();
+        Commerce fakerCommerce = faker.commerce();
+        LongStream.range(0, 300)
+                .parallel()
+                .forEach(  id ->
+                productRepository.save(new Product(id, fakerCommerce.productName(), new BigDecimal(fakerCommerce.price(0.01, 100000.0)), "")));
     }
 
     private void createCustomerData(CustomerRepository customerRepository) {
-        System.out.println("Inserting 300 customers");
-        DataCreatorsKt.createCustomers(300, customerRepository);
+        LongStream.range(0, 300)
+                        .parallel()
+                        .forEach(customerId ->
+                        customerRepository.save(new Customer(customerId, new EmailAddress(customerId + "@2.com"), "John" + customerId, "Smith" + customerId)));
     }
 }

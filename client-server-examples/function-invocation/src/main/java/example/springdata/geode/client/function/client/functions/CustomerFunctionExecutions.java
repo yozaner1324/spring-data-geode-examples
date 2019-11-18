@@ -1,6 +1,6 @@
 package example.springdata.geode.client.function.client.functions;
 
-import example.springdata.geode.domain.Customer;
+import example.springdata.geode.client.function.domain.Customer;
 import org.springframework.data.gemfire.function.annotation.FunctionId;
 import org.springframework.data.gemfire.function.annotation.OnRegion;
 

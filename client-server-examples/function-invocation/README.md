@@ -32,4 +32,6 @@ Your output from the test `functionsExecuteCorrectly` should look similar to the
     	 Order(id=1, customerId=3, billingAddress=Address(street=it, city=doesn't, country=matter), shippingAddress=Address(street=it, city=doesn't, country=matter)) 
     	LineItems:[Purchased 1 of Product Apple macBook at 899.99 for total of 899.99, Purchased 3 of Product Apple iPad at 499.99 for total of 1499.97]
    
-Number of products purchased and total cost may vary from the above run as they are determined randomly.
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.
+
+NOTE: Number of products purchased and total cost may vary from the above run as they are determined randomly.

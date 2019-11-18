@@ -1,14 +1,16 @@
 package example.springdata.geode.client.transactions.client;
 
-import example.springdata.geode.client.transactions.client.service.CustomerService;
-import example.springdata.geode.client.transactions.server.TransactionalServer;
 import example.springdata.geode.client.transactions.client.config.TransactionalClientConfig;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.EmailAddress;
+import example.springdata.geode.client.transactions.client.service.CustomerService;
+import example.springdata.geode.client.transactions.domain.Customer;
+import example.springdata.geode.client.transactions.domain.EmailAddress;
+import example.springdata.geode.client.transactions.server.TransactionalServer;
 import org.apache.geode.cache.Region;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
@@ -31,6 +33,8 @@ public class TransactionalClientTest extends ForkingClientServerIntegrationTests
 
     @Resource(name = "Customers")
     private Region<Long, Customer> customers;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @BeforeClass
     public static void setup() throws IOException {
@@ -55,23 +59,23 @@ public class TransactionalClientTest extends ForkingClientServerIntegrationTests
     @Test
     public void repositoryWasAutoConfiguredCorrectly() {
 
-        System.out.println("Number of Entries stored before = " + customerService.numberEntriesStoredOnServer());
+        logger.info("Number of Entries stored before = " + customerService.numberEntriesStoredOnServer());
         customerService.createFiveCustomers();
         assertThat(customerService.numberEntriesStoredOnServer()).isEqualTo(5);
-        System.out.println("Number of Entries stored after = " + customerService.numberEntriesStoredOnServer());
-        System.out.println("Customer for ID before (transaction commit success) = " + customerService.findById(2L).get());
+        logger.info("Number of Entries stored after = " + customerService.numberEntriesStoredOnServer());
+        logger.info("Customer for ID before (transaction commit success) = " + customerService.findById(2L).get());
         customerService.updateCustomersSuccess();
         assertThat(customerService.numberEntriesStoredOnServer()).isEqualTo(5);
         Customer customer = customerService.findById(2L).get();
         assertThat(customer.getFirstName()).isEqualTo("Humpty");
-        System.out.println("Customer for ID after (transaction commit success) = " + customer);
+        logger.info("Customer for ID after (transaction commit success) = " + customer);
         try {
             customerService.updateCustomersFailure();
         } catch (IllegalArgumentException exception) {
         }
         customer = customerService.findById(2L).get();
         assertThat(customer.getFirstName()).isEqualTo("Humpty");
-        System.out.println("Customer for ID after (transaction commit failure) = " + customerService.findById(2L).get());
+        logger.info("Customer for ID after (transaction commit failure) = " + customerService.findById(2L).get());
 
         Customer numpty = new Customer(2L, new EmailAddress("2@2.com"), "Numpty", "Hamilton");
         Customer frumpy = new Customer(2L, new EmailAddress("2@2.com"), "Frumpy", "Hamilton");
@@ -79,6 +83,6 @@ public class TransactionalClientTest extends ForkingClientServerIntegrationTests
         customerService.updateCustomersWithDelay(10, frumpy);
         customer = customerService.findById(2L).get();
         assertThat(customer).isEqualTo(frumpy);
-        System.out.println("Customer for ID after 2 updates with delay = " + customer);
+        logger.info("Customer for ID after 2 updates with delay = " + customer);
     }
 }

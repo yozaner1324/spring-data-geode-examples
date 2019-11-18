@@ -1,8 +1,7 @@
 package example.springdata.geode.server.compression;
 
 import example.springdata.geode.server.compression.repo.CustomerRepository;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.server.compression.repo.CustomerRepository;
+import example.springdata.geode.server.compression.domain.Customer;
 import org.apache.geode.cache.Region;
 import org.junit.Test;
 import org.junit.runner.RunWith;

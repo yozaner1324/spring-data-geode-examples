@@ -1,7 +1,6 @@
 package example.springdata.geode.server.lucene.config;
 
 import example.springdata.geode.server.lucene.domain.Customer;
-import example.springdata.geode.server.lucene.domain.Customer;
 import example.springdata.geode.server.lucene.repo.CustomerRepository;
 import org.apache.geode.cache.GemFireCache;
 import org.springframework.context.annotation.Bean;

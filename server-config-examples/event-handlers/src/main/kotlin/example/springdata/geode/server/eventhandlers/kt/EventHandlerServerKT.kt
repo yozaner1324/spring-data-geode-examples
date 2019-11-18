@@ -1,11 +1,12 @@
 package example.springdata.geode.server.eventhandlers.kt
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.EmailAddress
-import example.springdata.geode.domain.Product
 import example.springdata.geode.server.eventhandlers.kt.config.EventHandlerServerConfigurationKT
+import example.springdata.geode.server.eventhandlers.kt.domain.Customer
+import example.springdata.geode.server.eventhandlers.kt.domain.EmailAddress
+import example.springdata.geode.server.eventhandlers.kt.domain.Product
 import example.springdata.geode.server.eventhandlers.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.eventhandlers.kt.repo.ProductRepositoryKT
+import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -17,13 +18,15 @@ import java.util.stream.LongStream
 @SpringBootApplication(scanBasePackageClasses = [EventHandlerServerConfigurationKT::class])
 class EventHandlerServerKT {
 
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @Bean
     internal fun runner(customerRepository: CustomerRepositoryKT, productRepository: ProductRepositoryKT) = ApplicationRunner {
         createCustomerData(customerRepository)
         createProducts(productRepository)
 
         val product = productRepository.findById(5L)
-        println("product = " + product.get())
+        logger.info("product = " + product.get())
     }
 
     private fun createProducts(productRepository: ProductRepositoryKT) {
@@ -38,7 +41,7 @@ class EventHandlerServerKT {
     }
 
     private fun createCustomerData(customerRepository: CustomerRepositoryKT) {
-        println("Inserting 3 entries for keys: 1, 2, 3")
+        logger.info("Inserting 3 entries for keys: 1, 2, 3")
         LongStream.rangeClosed(1, 3)
             .forEach { customerId ->
                 customerRepository.save(Customer(customerId,

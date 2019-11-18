@@ -1,6 +1,6 @@
 package example.springdata.geode.server.expiration.custom.expiration;
 
-import example.springdata.geode.domain.Customer;
+import example.springdata.geode.server.expiration.custom.domain.Customer;
 import org.apache.geode.cache.CustomExpiry;
 import org.apache.geode.cache.ExpirationAction;
 import org.apache.geode.cache.ExpirationAttributes;

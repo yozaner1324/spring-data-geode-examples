@@ -1,7 +1,6 @@
 package example.springdata.geode.server.lucene;
 
 import example.springdata.geode.server.lucene.config.EntityDefinedLuceneIndexServerConfig;
-import example.springdata.geode.server.lucene.config.EntityDefinedLuceneIndexServerConfig;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

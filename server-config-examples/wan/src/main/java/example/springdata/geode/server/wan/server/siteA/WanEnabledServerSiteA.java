@@ -1,11 +1,12 @@
 package example.springdata.geode.server.wan.server.siteA;
 
 import com.github.javafaker.Faker;
-import example.springdata.geode.server.wan.repo.CustomerRepository;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.EmailAddress;
+import example.springdata.geode.server.wan.domain.Customer;
+import example.springdata.geode.server.wan.domain.EmailAddress;
 import example.springdata.geode.server.wan.repo.CustomerRepository;
 import example.springdata.geode.server.wan.server.siteA.config.SiteAWanEnabledServerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,9 @@ import java.util.stream.LongStream;
 
 @SpringBootApplication(scanBasePackageClasses = SiteAWanEnabledServerConfig.class)
 public class WanEnabledServerSiteA {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     public static void main(String[] args) {
         new SpringApplicationBuilder(WanEnabledServerSiteA.class)
                 .web(WebApplicationType.NONE)
@@ -33,7 +37,7 @@ public class WanEnabledServerSiteA {
     }
 
     private void createCustomerData(CustomerRepository customerRepository) {
-        System.out.println("Inserting 301 entries on siteA");
+        logger.info("Inserting 301 entries on siteA");
         Faker faker = new Faker();
         LongStream.rangeClosed(0, 300)
                 .forEach(customerId ->

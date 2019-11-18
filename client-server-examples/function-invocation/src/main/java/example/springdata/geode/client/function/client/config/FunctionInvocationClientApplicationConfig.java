@@ -18,21 +18,18 @@ package example.springdata.geode.client.function.client.config;
 
 import example.springdata.geode.client.function.client.functions.CustomerFunctionExecutions;
 import example.springdata.geode.client.function.client.repo.CustomerRepository;
-import example.springdata.geode.client.function.client.services.CustomerService;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.client.function.domain.Customer;
+import example.springdata.geode.client.function.domain.Order;
+import example.springdata.geode.client.function.domain.Product;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
+import org.springframework.data.gemfire.transaction.config.EnableGemfireCacheTransactions;
 
 /**
  * Spring JavaConfig configuration class to setup a Spring container and infrastructure components.
@@ -40,18 +37,13 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
  * @author Udo Kohlmeyer
  * @author Patrick Johnson
  */
+
 @Configuration
-@ComponentScan(basePackageClasses = CustomerService.class)
 @EnableGemfireRepositories(basePackageClasses = CustomerRepository.class)
 @EnableGemfireFunctionExecutions(basePackageClasses = CustomerFunctionExecutions.class)
 @ClientCacheApplication(name = "FunctionInvocationClient", logLevel = "error", pingInterval = 5000L, readTimeout = 15000, retryAttempts = 1)
+@EnableGemfireCacheTransactions
 public class FunctionInvocationClientApplicationConfig {
-
-    @Bean("customerTemplate")
-    @DependsOn("Customers")
-    protected GemfireTemplate configureCustomerTemplate(GemFireCache gemfireCache) {
-        return new GemfireTemplate(gemfireCache.getRegion("Customers"));
-    }
 
     @Bean("Customers")
     protected ClientRegionFactoryBean<Long, Customer> configureProxyClientCustomerRegion(GemFireCache gemFireCache) {

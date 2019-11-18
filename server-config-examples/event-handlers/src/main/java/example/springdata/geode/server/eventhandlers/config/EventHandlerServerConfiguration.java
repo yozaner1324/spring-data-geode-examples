@@ -1,10 +1,16 @@
 package example.springdata.geode.server.eventhandlers.config;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.eventhandlers.domain.Customer;
+import example.springdata.geode.server.eventhandlers.domain.Product;
 import example.springdata.geode.server.eventhandlers.repo.CustomerRepository;
-import example.springdata.geode.util.LoggingCacheListener;
-import org.apache.geode.cache.*;
+import example.springdata.geode.server.eventhandlers.utils.CustomerCacheWriter;
+import example.springdata.geode.server.eventhandlers.utils.LoggingCacheListener;
+import example.springdata.geode.server.eventhandlers.utils.ProductCacheLoader;
+import org.apache.geode.cache.CacheListener;
+import org.apache.geode.cache.CacheLoader;
+import org.apache.geode.cache.CacheWriter;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.GemFireCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.PartitionedRegionFactoryBean;
 import org.springframework.data.gemfire.ReplicatedRegionFactoryBean;

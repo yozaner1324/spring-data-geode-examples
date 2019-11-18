@@ -2,12 +2,14 @@ package example.springdata.geode.server.expiration.entity;
 
 import com.github.javafaker.Faker;
 import com.jayway.awaitility.Awaitility;
-import example.springdata.geode.domain.Address;
-import example.springdata.geode.domain.EmailAddress;
+import example.springdata.geode.server.expiration.entity.domain.Address;
+import example.springdata.geode.server.expiration.entity.domain.EmailAddress;
 import example.springdata.geode.server.expiration.entity.domain.Customer;
 import example.springdata.geode.server.expiration.entity.repo.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -18,7 +20,7 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = EntityDefinedExpirationServer.class)
@@ -31,6 +33,8 @@ public class EntityDefinedExpirationServerTest {
     @Autowired
     Faker faker;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Test
     public void expirationIsConfiguredCorrectly() {
         customerRepository.save(new Customer(1L, new EmailAddress(faker.internet().emailAddress()),
@@ -42,7 +46,7 @@ public class EntityDefinedExpirationServerTest {
         final Callable<Boolean> conditionEvaluator = () -> !customerRepository.findById(1L).isPresent();
 
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss:SSS");
-        System.out.println("Starting TTL wait period: " + simpleDateFormat.format(new Date()));
+        logger.info("Starting TTL wait period: " + simpleDateFormat.format(new Date()));
         //Due to the constant "getting" of the entry, the idle expiry timeout will not be met and the time-to-live
         // will be used.
         Awaitility.await()
@@ -52,7 +56,7 @@ public class EntityDefinedExpirationServerTest {
 
         assertThat(customerRepository.count()).isEqualTo(0);
 
-        System.out.println("Ending TTL wait period: " + simpleDateFormat.format(new Date()));
+        logger.info("Ending TTL wait period: " + simpleDateFormat.format(new Date()));
 
         customerRepository.save(new Customer(1L, new EmailAddress(faker.internet().emailAddress()),
                 faker.name().firstName(), faker.name().lastName(),
@@ -60,7 +64,7 @@ public class EntityDefinedExpirationServerTest {
 
         assertThat(customerRepository.count()).isEqualTo(1);
 
-        System.out.println("Starting Idle wait period: " + simpleDateFormat.format(new Date()));
+        logger.info("Starting Idle wait period: " + simpleDateFormat.format(new Date()));
 
         //Due to the delay in "getting" the entry, the idle timeout of 2s should delete the entry.
         Awaitility.await()
@@ -71,6 +75,6 @@ public class EntityDefinedExpirationServerTest {
 
         assertThat(customerRepository.count()).isEqualTo(0);
 
-        System.out.println("Ending Idle wait period: " + simpleDateFormat.format(new Date()));
+        logger.info("Ending Idle wait period: " + simpleDateFormat.format(new Date()));
     }
 }

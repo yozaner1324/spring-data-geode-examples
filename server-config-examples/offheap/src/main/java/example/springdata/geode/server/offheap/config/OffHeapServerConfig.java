@@ -1,7 +1,7 @@
 package example.springdata.geode.server.offheap.config;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.offheap.domain.Customer;
+import example.springdata.geode.server.offheap.domain.Product;
 import example.springdata.geode.server.offheap.repo.CustomerRepository;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;

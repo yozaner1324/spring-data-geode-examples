@@ -1,10 +1,10 @@
 package example.springdata.geode.client.cq.kt
 
-import example.springdata.geode.client.common.kt.server.ServerKT
-import example.springdata.geode.client.cq.kt.config.CQClientApplicationConfigKT
-import example.springdata.geode.client.cq.kt.services.CustomerServiceKT
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.EmailAddress
+import example.springdata.geode.client.cq.kt.server.ServerKT
+import example.springdata.geode.client.cq.kt.client.config.CQClientApplicationConfigKT
+import example.springdata.geode.client.cq.kt.client.repo.CustomerRepositoryKT
+import example.springdata.geode.client.cq.kt.domain.Customer
+import example.springdata.geode.client.cq.kt.domain.EmailAddress
 import org.apache.geode.cache.Region
 import org.apache.geode.cache.query.CqEvent
 import org.assertj.core.api.Assertions.assertThat
@@ -13,6 +13,7 @@ import org.junit.After
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.gemfire.listener.ContinuousQueryListenerContainer
@@ -23,6 +24,7 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.junit4.SpringRunner
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 import javax.annotation.Resource
 
 @RunWith(SpringRunner::class)
@@ -30,16 +32,18 @@ import javax.annotation.Resource
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class CQTestKT : ForkingClientServerIntegrationTestsSupport() {
 
-    private var counter = 0
+    private var counter = AtomicInteger(0)
 
     @Autowired
     lateinit var container: ContinuousQueryListenerContainer
 
     @Autowired
-    lateinit var customerService: CustomerServiceKT
+    lateinit var customerRepository: CustomerRepositoryKT
 
     @Resource(name = "Customers")
     lateinit var customers: Region<Long, Customer>
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     companion object {
         @BeforeClass
@@ -51,8 +55,8 @@ class CQTestKT : ForkingClientServerIntegrationTestsSupport() {
     }
 
     @Test
-    fun customerServiceWasConfiguredCorrectly() {
-        assertThat(this.customerService).isNotNull
+    fun customerRepositoryWasConfiguredCorrectly() {
+        assertThat(this.customerRepository).isNotNull
     }
 
     @Test
@@ -65,19 +69,19 @@ class CQTestKT : ForkingClientServerIntegrationTestsSupport() {
     @Test
     fun continuousQueryWorkingCorrectly() {
         assertThat(this.customers).isEmpty()
-        println("Inserting 3 entries for keys: 1, 2, 3")
-        customerService.save(Customer(1L, EmailAddress("2@2.com"), "John", "Smith"))
-        customerService.save(Customer(2L, EmailAddress("3@3.com"), "Frank", "Lamport"))
-        customerService.save(Customer(3L, EmailAddress("5@5.com"), "Jude", "Simmons"))
+        logger.info("Inserting 3 entries for keys: 1, 2, 3")
+        customerRepository.save(Customer(1L, EmailAddress("2@2.com"), "John", "Smith"))
+        customerRepository.save(Customer(2L, EmailAddress("3@3.com"), "Frank", "Lamport"))
+        customerRepository.save(Customer(3L, EmailAddress("5@5.com"), "Jude", "Simmons"))
         assertThat(customers.keySetOnServer().size).isEqualTo(3)
 
-        Awaitility.await().atMost(30, TimeUnit.SECONDS).until { this.counter == 3 }
+        Awaitility.await().atMost(30, TimeUnit.SECONDS).until { this.counter.get() == 3 }
     }
 
     @ContinuousQuery(name = "CustomerCQ", query = "SELECT * FROM /Customers")
     fun handleEvent(event: CqEvent) {
-        println("Received message for CQ 'CustomerCQ'$event")
-        counter++
+        logger.info("Received message for CQ 'CustomerCQ'$event")
+        counter.incrementAndGet()
     }
 
     @After

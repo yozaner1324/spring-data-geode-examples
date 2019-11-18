@@ -7,6 +7,7 @@ import org.apache.geode.cache.lucene.LuceneService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.gemfire.search.lucene.LuceneTemplate
@@ -27,6 +28,8 @@ class LuceneIndexServerKTTest {
     @Autowired
     lateinit var customerRepository: CustomerRepositoryKT
 
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @Test
     fun luceneIsConfiguredCorrectly() {
         assertThat(luceneService.allIndexes.size).isEqualTo(1)
@@ -34,16 +37,16 @@ class LuceneIndexServerKTTest {
         assertThat(luceneService.allIndexes.iterator().next().fieldNames.size).isEqualTo(1)
         assertThat(luceneService.allIndexes.iterator().next().fieldNames[0]).isEqualTo("lastName")
 
-        println("Inserting 300 customers")
+        logger.info("Inserting 300 customers")
         createLuceneCustomers(300, customerRepository)
 
         assertThat(customerRepository.count()).isEqualTo(300)
 
-        println("Completed creating customers ")
+        logger.info("Completed creating customers ")
 
         val lastName = luceneTemplate.query<Any, CustomerKT>("D*", "lastName", 300)
 
-        println("Customers with last names beginning with 'D':")
-        lastName.forEach { result -> println(result.value.toString()) }
+        logger.info("Customers with last names beginning with 'D':")
+        lastName.forEach { result -> logger.info(result.value.toString()) }
     }
 }

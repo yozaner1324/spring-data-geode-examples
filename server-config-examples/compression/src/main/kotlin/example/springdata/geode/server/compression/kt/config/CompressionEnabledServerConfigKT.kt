@@ -1,6 +1,6 @@
 package example.springdata.geode.server.compression.kt.config
 
-import example.springdata.geode.domain.Customer
+import example.springdata.geode.server.compression.kt.domain.Customer
 import example.springdata.geode.server.compression.kt.repo.CustomerRepositoryKT
 import org.apache.geode.cache.DataPolicy
 import org.apache.geode.cache.GemFireCache

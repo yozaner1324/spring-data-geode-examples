@@ -1,8 +1,8 @@
 package example.springdata.geode.server.region.kt
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Order
-import example.springdata.geode.domain.Product
+import example.springdata.geode.server.region.kt.domain.Customer
+import example.springdata.geode.server.region.kt.domain.Order
+import example.springdata.geode.server.region.kt.domain.Product
 import example.springdata.geode.server.region.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.region.kt.repo.OrderRepositoryKT
 import example.springdata.geode.server.region.kt.repo.ProductRepositoryKT

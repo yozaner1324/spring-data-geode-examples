@@ -1,8 +1,8 @@
 package example.springdata.geode.server.expiration.custom.kt.config
 
 import com.github.javafaker.Faker
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.server.expiration.custom.expiration.CustomCustomerExpiry
+import example.springdata.geode.server.expiration.custom.kt.domain.Customer
+import example.springdata.geode.server.expiration.custom.kt.expiration.CustomCustomerExpiryKT
 import example.springdata.geode.server.expiration.custom.kt.repo.CustomerRepositoryKT
 import org.apache.geode.cache.CustomExpiry
 import org.apache.geode.cache.DataPolicy
@@ -24,10 +24,10 @@ class CustomExpiryServerConfigKT {
     fun createDataFaker(): Faker = Faker()
 
     @Bean("IDLE")
-    internal fun createIdleExpiration() = CustomCustomerExpiry(2)
+    internal fun createIdleExpiration() = CustomCustomerExpiryKT(2)
 
     @Bean("TTL")
-    internal fun createTtlExpiration() = CustomCustomerExpiry(4)
+    internal fun createTtlExpiration() = CustomCustomerExpiryKT(4)
 
     @Bean("Customers")
     fun createCustomerRegion(gemFireCache: GemFireCache,

@@ -1,8 +1,7 @@
 package example.springdata.geode.server.wan.config;
 
 import com.github.javafaker.Faker;
-import example.springdata.geode.server.wan.repo.CustomerRepository;
-import example.springdata.geode.domain.Customer;
+import example.springdata.geode.server.wan.domain.Customer;
 import example.springdata.geode.server.wan.repo.CustomerRepository;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;

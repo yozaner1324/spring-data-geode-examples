@@ -1,8 +1,8 @@
 package example.springdata.geode.functions.cascading.server.config;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.functions.cascading.kt.domain.Customer;
+import example.springdata.geode.functions.cascading.kt.domain.Order;
+import example.springdata.geode.functions.cascading.kt.domain.Product;
 import example.springdata.geode.functions.cascading.server.functions.CascadingFunctions;
 import org.apache.geode.cache.DataPolicy;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +13,9 @@ import org.springframework.data.gemfire.config.annotation.CacheServerApplication
 import org.springframework.data.gemfire.config.annotation.EnableLocator;
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctions;
 
-@CacheServerApplication(autoStartup = true, copyOnRead = true, port = 0, locators = "localhost[10334]", logLevel = "error")
+@CacheServerApplication(copyOnRead = true, port = 0, locators = "localhost[10334]", logLevel = "error")
 @EnableGemfireFunctions
-@EnableLocator(host = "localhost", port = 10334)
+@EnableLocator()
 @Import(CascadingFunctions.class)
 public class CascadingFunctionServerConfig {
 

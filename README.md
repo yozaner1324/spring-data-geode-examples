@@ -5,7 +5,7 @@ This project provides a number of examples to get you started using Spring Data 
 
 * **Client Server** - These examples pertain to the client-server paradigm. These examples will involve a client connecting to a server to perform operations. 
 * **Server Config** - These examples demonstrate the configuration of servers. This includes regions, persistence, wan, subscriptions, functions and indexes.
-* **Advanced** - These examples are to show case how higher-level use cases are solved. e.g caching, write-behind/read-through, transactionality 
+* **Advanced** - These examples are to show case how higher-level use cases are solved.
 
 It is important to note that all examples will follow the prescribed Maven directory structure. Also, all examples will have both a Java and [Kotlin](http://kotlinlang.org) implementation. 
 
@@ -53,3 +53,4 @@ Examples:
 # Running The Examples
 
 Each example has at least one test file located in the test directory. The examples are driven by the tests, so simply run the test either through your IDE or via the commandline. 
+The logging level of the examples is set to "error", so there will be no output. To see output, simply find the `logback.xml` file located in src/test/resources and set the loglevel to "info".

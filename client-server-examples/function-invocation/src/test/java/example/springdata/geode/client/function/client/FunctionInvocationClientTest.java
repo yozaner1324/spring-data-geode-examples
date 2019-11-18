@@ -1,15 +1,25 @@
 package example.springdata.geode.client.function.client;
 
 import example.springdata.geode.client.function.client.config.FunctionInvocationClientApplicationConfig;
-import example.springdata.geode.client.function.client.services.CustomerService;
-import example.springdata.geode.client.function.client.services.OrderService;
-import example.springdata.geode.client.function.client.services.ProductService;
+import example.springdata.geode.client.function.client.functions.CustomerFunctionExecutions;
+import example.springdata.geode.client.function.client.functions.OrderFunctionExecutions;
+import example.springdata.geode.client.function.client.functions.ProductFunctionExecutions;
+import example.springdata.geode.client.function.client.repo.CustomerRepository;
+import example.springdata.geode.client.function.client.repo.OrderRepository;
+import example.springdata.geode.client.function.client.repo.ProductRepository;
+import example.springdata.geode.client.function.domain.Address;
+import example.springdata.geode.client.function.domain.Customer;
+import example.springdata.geode.client.function.domain.EmailAddress;
+import example.springdata.geode.client.function.domain.LineItem;
+import example.springdata.geode.client.function.domain.Order;
+import example.springdata.geode.client.function.domain.Product;
 import example.springdata.geode.client.function.server.FunctionServer;
-import example.springdata.geode.domain.*;
 import org.apache.geode.cache.Region;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
@@ -25,7 +35,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = FunctionInvocationClientApplicationConfig.class)
@@ -33,13 +43,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FunctionInvocationClientTest extends ForkingClientServerIntegrationTestsSupport {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerRepository customerRepository;
 
     @Autowired
-    private OrderService orderService;
+    private OrderRepository orderRepository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CustomerFunctionExecutions customerFunctionExecutions;
+
+    @Autowired
+    private OrderFunctionExecutions orderFunctionExecutions;
+
+    @Autowired
+    private ProductFunctionExecutions productFunctionExecutions;
 
     @Resource(name = "Customers")
     private Region<Long, Customer> customers;
@@ -50,15 +69,17 @@ public class FunctionInvocationClientTest extends ForkingClientServerIntegration
     @Resource(name = "Products")
     private Region<Long, Product> products;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @BeforeClass
     public static void setup() throws IOException {
         startGemFireServer(FunctionServer.class);
     }
 
     @Test
-    public void customerServiceWasConfiguredCorrectly() {
+    public void customerRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.customerService).isNotNull();
+        assertThat(this.customerRepository).isNotNull();
     }
 
     @Test
@@ -89,57 +110,57 @@ public class FunctionInvocationClientTest extends ForkingClientServerIntegration
     }
 
     @Test
-    public void orderServiceWasConfiguredCorrectly() {
+    public void orderRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.orderService).isNotNull();
+        assertThat(this.orderRepository).isNotNull();
     }
 
     @Test
-    public void productServiceWasConfiguredCorrectly() {
+    public void productRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.productService).isNotNull();
+        assertThat(this.productRepository).isNotNull();
     }
 
     @Test
     public void functionsExecuteCorrectly() {
         createCustomerData();
 
-        List<Customer> cust = customerService.listAllCustomersForEmailAddress("2@2.com", "3@3.com");
+        List<Customer> cust = customerFunctionExecutions.listAllCustomersForEmailAddress("2@2.com", "3@3.com").get(0);
         assertThat(cust.size()).isEqualTo(2);
-        System.out.println("All customers for emailAddresses:3@3.com,2@2.com using function invocation: \n\t " + cust);
+        logger.info("All customers for emailAddresses:3@3.com,2@2.com using function invocation: \n\t " + cust);
 
         createProducts();
-        BigDecimal sum = productService.sumPricesForAllProducts().get(0);
+        BigDecimal sum = productFunctionExecutions.sumPricesForAllProducts().get(0);
         assertThat(sum).isEqualTo(BigDecimal.valueOf(1499.97));
-        System.out.println("Running function to sum up all product prices: \n\t" + sum);
+        logger.info("Running function to sum up all product prices: \n\t" + sum);
 
         createOrders();
 
-        sum = orderService.sumPricesForAllProductsForOrder(1L).get(0);
+        sum = orderFunctionExecutions.sumPricesForAllProductsForOrder(1L).get(0);
         assertThat(sum).isGreaterThanOrEqualTo(BigDecimal.valueOf(99.99));
-        System.out.println("Running function to sum up all order lineItems prices for order 1: \n\t" + sum);
-        Order order = orderService.findById(1L);
-        System.out.println("For order: \n\t " + order);
+        logger.info("Running function to sum up all order lineItems prices for order 1: \n\t" + sum);
+        Order order = orderRepository.findById(1L).get();
+        logger.info("For order: \n\t " + order);
     }
 
     public void createCustomerData() {
 
-        System.out.println("Inserting 3 entries for keys: 1, 2, 3");
-        customerService.save(new Customer(1L, new EmailAddress("2@2.com"), "John", "Smith"));
-        customerService.save(new Customer(2L, new EmailAddress("3@3.com"), "Frank", "Lamport"));
-        customerService.save(new Customer(3L, new EmailAddress("5@5.com"), "Jude", "Simmons"));
+        logger.info("Inserting 3 entries for keys: 1, 2, 3");
+        customerRepository.save(new Customer(1L, new EmailAddress("2@2.com"), "John", "Smith"));
+        customerRepository.save(new Customer(2L, new EmailAddress("3@3.com"), "Frank", "Lamport"));
+        customerRepository.save(new Customer(3L, new EmailAddress("5@5.com"), "Jude", "Simmons"));
         assertThat(customers.keySetOnServer().size()).isEqualTo(3);
     }
 
     public void createProducts() {
-        productService.save(new Product(1L, "Apple iPod", new BigDecimal("99.99"),
+        productRepository.save(new Product(1L, "Apple iPod", new BigDecimal("99.99"),
                 "An Apple portable music player"));
-        productService.save(new Product(2L, "Apple iPad", new BigDecimal("499.99"),
+        productRepository.save(new Product(2L, "Apple iPad", new BigDecimal("499.99"),
                 "An Apple tablet device"));
         Product macbook = new Product(3L, "Apple macBook", new BigDecimal("899.99"),
                 "An Apple notebook computer");
         macbook.addAttribute("warranty", "included");
-        productService.save(macbook);
+        productRepository.save(macbook);
         assertThat(products.keySetOnServer().size()).isEqualTo(3);
     }
 
@@ -152,9 +173,9 @@ public class FunctionInvocationClientTest extends ForkingClientServerIntegration
                     IntStream.rangeClosed(0, random.nextInt(3) + 1).forEach((lineItemCount) -> {
                         int quantity = random.nextInt(3) + 1;
                         long productId = random.nextInt(3) + 1;
-                        order.add(new LineItem(productService.findById(productId), quantity));
+                        order.add(new LineItem(productRepository.findById(productId).get(), quantity));
                     });
-                    orderService.save(order);
+                    orderRepository.save(order);
                 }));
         assertThat(orders.keySetOnServer().size()).isEqualTo(100);
     }

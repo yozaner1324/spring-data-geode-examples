@@ -1,7 +1,7 @@
 package example.springdata.geode.server.eventhandlers;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.eventhandlers.domain.Customer;
+import example.springdata.geode.server.eventhandlers.domain.Product;
 import example.springdata.geode.server.eventhandlers.repo.CustomerRepository;
 import example.springdata.geode.server.eventhandlers.repo.ProductRepository;
 import org.apache.geode.cache.Region;

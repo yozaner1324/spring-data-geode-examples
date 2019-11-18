@@ -36,3 +36,5 @@ Your output from the test `repositoryWasAutoConfiguredCorrectly` should look sim
     [FORK] - In region [Customers] updated key [2] [oldValue [Customer(id=2, emailAddress=EmailAddress(value=2@2.com), firstName=Numpty, lastName=Hamilton)]] new value [Customer(id=2, emailAddress=EmailAddress(value=2@2.com), firstName=Numpty, lastName=Hamilton)]
     [FORK] - In region [Customers] updated key [2] [oldValue [Customer(id=2, emailAddress=EmailAddress(value=2@2.com), firstName=Frumpy, lastName=Hamilton)]] new value [Customer(id=2, emailAddress=EmailAddress(value=2@2.com), firstName=Frumpy, lastName=Hamilton)]
     Customer for ID after 2 updates with delay = Customer(id=2, emailAddress=EmailAddress(value=2@2.com), firstName=Frumpy, lastName=Hamilton)
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

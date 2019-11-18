@@ -1,10 +1,11 @@
 package example.springdata.geode.server.region.kt
 
-import example.springdata.geode.domain.*
 import example.springdata.geode.server.region.kt.config.RegionTypeConfigurationKT
+import example.springdata.geode.server.region.kt.domain.*
 import example.springdata.geode.server.region.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.region.kt.repo.OrderRepositoryKT
 import example.springdata.geode.server.region.kt.repo.ProductRepositoryKT
+import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -17,6 +18,9 @@ import java.util.stream.LongStream
 
 @SpringBootApplication(scanBasePackageClasses = [RegionTypeConfigurationKT::class])
 class RegionTypeServerKT {
+    
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+    
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -37,9 +41,9 @@ class RegionTypeServerKT {
 
             createOrders(productRepository, orderRepository)
 
-            println("There are " + customerRepository.count() + " customers")
-            println("There are " + productRepository.count() + " products")
-            println("There are " + orderRepository.count() + " orders")
+            logger.info("There are " + customerRepository.count() + " customers")
+            logger.info("There are " + productRepository.count() + " products")
+            logger.info("There are " + orderRepository.count() + " orders")
         }
     }
 
@@ -71,7 +75,7 @@ class RegionTypeServerKT {
     }
 
     private fun createCustomerData(customerRepository: CustomerRepositoryKT) {
-        println("Inserting 3 entries for keys: 1, 2, 3")
+        logger.info("Inserting 3 entries for keys: 1, 2, 3")
         LongStream.rangeClosed(0, 3000)
                 .parallel()
                 .forEach { customerId ->

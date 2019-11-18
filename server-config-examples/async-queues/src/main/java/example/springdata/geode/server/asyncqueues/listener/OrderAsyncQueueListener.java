@@ -1,8 +1,8 @@
 package example.springdata.geode.server.asyncqueues.listener;
 
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.OrderProductSummary;
-import example.springdata.geode.domain.OrderProductSummaryKey;
+import example.springdata.geode.server.asyncqueues.domain.Order;
+import example.springdata.geode.server.asyncqueues.domain.OrderProductSummary;
+import example.springdata.geode.server.asyncqueues.domain.OrderProductSummaryKey;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.asyncqueue.AsyncEvent;
 import org.apache.geode.cache.asyncqueue.AsyncEventListener;
@@ -34,7 +34,7 @@ public class OrderAsyncQueueListener implements AsyncEventListener {
                     if (orderProductSummary == null) {
                         orderProductSummary = new OrderProductSummary(key, new BigDecimal("0.00"));
                     }
-                    orderProductSummary.setSummaryAmount(orderProductSummary.getSummaryAmount().add(lineItem.getTotal()));
+                    orderProductSummary.setSummaryAmount(orderProductSummary.getSummaryAmount().add(lineItem.calcTotal()));
                     summaryMap.put(key, orderProductSummary);
                 });
             }

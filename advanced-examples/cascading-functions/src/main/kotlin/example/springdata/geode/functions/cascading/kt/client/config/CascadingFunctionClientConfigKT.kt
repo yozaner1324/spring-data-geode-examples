@@ -1,15 +1,13 @@
 package example.springdata.geode.functions.cascading.kt.client.config
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Order
-import example.springdata.geode.domain.Product
 import example.springdata.geode.functions.cascading.kt.client.functions.CustomerFunctionExecutionsKT
 import example.springdata.geode.functions.cascading.kt.client.repo.CustomerRepositoryKT
-import example.springdata.geode.functions.cascading.kt.client.services.CustomerServiceKT
+import example.springdata.geode.functions.cascading.kt.domain.Customer
+import example.springdata.geode.functions.cascading.kt.domain.Order
+import example.springdata.geode.functions.cascading.kt.domain.Product
 import org.apache.geode.cache.GemFireCache
 import org.apache.geode.cache.client.ClientRegionShortcut
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @ClientCacheApplication(name = "CascadingFunctionClientCache", logLevel = "error", pingInterval = 5000L, readTimeout = 15000, retryAttempts = 1)
 @EnableGemfireFunctionExecutions(basePackageClasses = [CustomerFunctionExecutionsKT::class])
 @EnableGemfireRepositories(basePackageClasses = [CustomerRepositoryKT::class])
-@ComponentScan(basePackageClasses = [CustomerServiceKT::class])
 @EnableGemfireCacheTransactions
 @EnableTransactionManagement
 class CascadingFunctionClientConfigKT {

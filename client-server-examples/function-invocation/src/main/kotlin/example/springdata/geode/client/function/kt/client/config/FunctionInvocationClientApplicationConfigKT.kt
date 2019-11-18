@@ -18,19 +18,18 @@ package example.springdata.geode.client.function.kt.client.config
 
 import example.springdata.geode.client.function.kt.client.functions.CustomerFunctionExecutionsKT
 import example.springdata.geode.client.function.kt.client.repo.CustomerRepositoryKT
-import example.springdata.geode.client.function.kt.client.services.CustomerServiceKT
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Order
-import example.springdata.geode.domain.Product
+import example.springdata.geode.client.function.kt.domain.Customer
+import example.springdata.geode.client.function.kt.domain.Order
+import example.springdata.geode.client.function.kt.domain.Product
 import org.apache.geode.cache.GemFireCache
 import org.apache.geode.cache.client.ClientRegionShortcut
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories
+import org.springframework.data.gemfire.transaction.config.EnableGemfireCacheTransactions
 
 /**
  * Spring JavaConfig configuration class to setup a Spring container and infrastructure components.
@@ -39,10 +38,10 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
  * @author Patrick Johnson
  */
 @Configuration
-@ComponentScan(basePackageClasses = [CustomerServiceKT::class])
 @EnableGemfireRepositories(basePackageClasses = [CustomerRepositoryKT::class])
 @EnableGemfireFunctionExecutions(basePackageClasses = [CustomerFunctionExecutionsKT::class])
 @ClientCacheApplication(name = "FunctionInvocationClient", logLevel = "error", pingInterval = 5000L, readTimeout = 15000, retryAttempts = 1)
+@EnableGemfireCacheTransactions
 class FunctionInvocationClientApplicationConfigKT {
 
     @Bean("Customers")

@@ -17,7 +17,7 @@
 
 package example.springdata.geode.server.wan.substitution.kt.filter
 
-import example.springdata.geode.domain.Customer
+import example.springdata.geode.server.wan.kt.domain.Customer
 import org.apache.geode.cache.EntryEvent
 import org.apache.geode.cache.wan.GatewayEventSubstitutionFilter
 import org.springframework.stereotype.Component

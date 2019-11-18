@@ -1,6 +1,6 @@
 package example.springdata.geode.server.eventhandlers.repo;
 
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.eventhandlers.domain.Product;
 import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.data.repository.CrudRepository;
 

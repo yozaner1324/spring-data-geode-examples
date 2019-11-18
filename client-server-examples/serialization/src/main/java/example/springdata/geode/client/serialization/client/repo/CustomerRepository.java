@@ -1,7 +1,11 @@
 package example.springdata.geode.client.serialization.client.repo;
 
-import example.springdata.geode.client.common.client.repo.BaseCustomerRepository;
+import example.springdata.geode.client.serialization.domain.Customer;
+import org.springframework.data.repository.CrudRepository;
 
-public interface CustomerRepository extends BaseCustomerRepository {
+import java.util.List;
 
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
+
+	List<Customer> findAll();
 }

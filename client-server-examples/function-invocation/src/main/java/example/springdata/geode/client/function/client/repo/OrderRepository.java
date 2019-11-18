@@ -1,6 +1,6 @@
 package example.springdata.geode.client.function.client.repo;
 
-import example.springdata.geode.domain.Order;
+import example.springdata.geode.client.function.domain.Order;
 import org.springframework.data.gemfire.mapping.annotation.ClientRegion;
 import org.springframework.data.repository.CrudRepository;
 

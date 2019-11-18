@@ -1,10 +1,17 @@
 package example.springdata.geode.server.region;
 
-import example.springdata.geode.domain.*;
+import example.springdata.geode.server.region.domain.Address;
+import example.springdata.geode.server.region.domain.Customer;
+import example.springdata.geode.server.region.domain.EmailAddress;
+import example.springdata.geode.server.region.domain.LineItem;
+import example.springdata.geode.server.region.domain.Order;
+import example.springdata.geode.server.region.domain.Product;
 import example.springdata.geode.server.region.config.RegionTypeConfiguration;
 import example.springdata.geode.server.region.repo.CustomerRepository;
 import example.springdata.geode.server.region.repo.OrderRepository;
 import example.springdata.geode.server.region.repo.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +25,9 @@ import java.util.stream.LongStream;
 
 @SpringBootApplication(scanBasePackageClasses = RegionTypeConfiguration.class)
 public class RegionTypeServer {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     public static void main(String[] args) {
         new SpringApplicationBuilder(RegionTypeServer.class)
             .web(WebApplicationType.NONE)
@@ -35,9 +45,9 @@ public class RegionTypeServer {
 
             createOrders(productRepository, orderRepository);
 
-            System.out.println("There are " + customerRepository.count() + " customers");
-            System.out.println("There are " + productRepository.count() + " products");
-            System.out.println("There are " + orderRepository.count() + " orders");
+            logger.info("There are " + customerRepository.count() + " customers");
+            logger.info("There are " + productRepository.count() + " products");
+            logger.info("There are " + orderRepository.count() + " orders");
         };
     }
 

@@ -1,7 +1,7 @@
 package example.springdata.geode.server.eventhandlers.kt
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Product
+import example.springdata.geode.server.eventhandlers.kt.domain.Customer
+import example.springdata.geode.server.eventhandlers.kt.domain.Product
 import example.springdata.geode.server.eventhandlers.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.eventhandlers.kt.repo.ProductRepositoryKT
 import org.apache.geode.cache.Region

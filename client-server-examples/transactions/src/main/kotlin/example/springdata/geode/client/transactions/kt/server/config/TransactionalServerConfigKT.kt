@@ -1,11 +1,8 @@
 package example.springdata.geode.client.transactions.kt.server.config
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Order
-import example.springdata.geode.domain.Product
-import example.springdata.geode.util.CustomerTransactionListener
-import example.springdata.geode.util.CustomerTransactionWriter
-import example.springdata.geode.util.LoggingCacheListener
+import example.springdata.geode.client.transactions.domain.Customer
+import example.springdata.geode.client.transactions.kt.server.utils.CustomerTransactionListener
+import example.springdata.geode.client.transactions.kt.server.utils.CustomerTransactionWriter
 import org.apache.geode.cache.DataPolicy
 import org.apache.geode.cache.GemFireCache
 import org.apache.geode.cache.Scope
@@ -40,33 +37,11 @@ class TransactionalServerConfigKT {
             }
 
     @Bean
-    internal fun loggingCacheListener() = LoggingCacheListener<Long, Customer>()
-
-    @Bean
     fun createCustomerRegion(gemfireCache: GemFireCache): ReplicatedRegionFactoryBean<Long, Customer> =
             ReplicatedRegionFactoryBean<Long, Customer>().apply {
                 cache = gemfireCache
                 setRegionName("Customers")
                 dataPolicy = DataPolicy.REPLICATE
                 scope = Scope.DISTRIBUTED_ACK
-                setCacheListeners(arrayOf(loggingCacheListener()))
-            }
-
-    @Bean("Orders")
-    fun createOrderRegion(gemfireCache: GemFireCache): ReplicatedRegionFactoryBean<Long, Order> =
-            ReplicatedRegionFactoryBean<Long, Order>().apply {
-                cache = gemfireCache
-                setRegionName("Orders")
-                dataPolicy = DataPolicy.REPLICATE
-                setScope(Scope.DISTRIBUTED_ACK)
-            }
-
-    @Bean("Products")
-    fun createProductRegion(gemfireCache: GemFireCache): ReplicatedRegionFactoryBean<Long, Product> =
-            ReplicatedRegionFactoryBean<Long, Product>().apply {
-                cache = gemfireCache
-                setRegionName("Products")
-                dataPolicy = DataPolicy.REPLICATE
-                setScope(Scope.DISTRIBUTED_ACK)
             }
 }

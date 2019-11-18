@@ -1,8 +1,8 @@
 package example.springdata.geode.client.transactions.client.service;
 
 import example.springdata.geode.client.transactions.client.repo.CustomerRepository;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.EmailAddress;
+import example.springdata.geode.client.transactions.domain.Customer;
+import example.springdata.geode.client.transactions.domain.EmailAddress;
 import org.apache.geode.cache.Region;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -30,28 +30,12 @@ public class CustomerService {
         return customerRepository;
     }
 
-    public void save(Customer customer) {
-        getCustomerRepository().save(customer);
-    }
-
-    public List<Customer> findAll() {
-        return getCustomerRepository().findAll();
-    }
-
     public Optional<Customer> findById(long id) {
         return getCustomerRepository().findById(id);
     }
 
-    public int numberEntriesStoredLocally() {
-        return customerRegion.size();
-    }
-
     public int numberEntriesStoredOnServer() {
         return customerRegion.keySetOnServer().size();
-    }
-
-    public void deleteById(long id) {
-        getCustomerRepository().deleteById(id);
     }
 
     @Transactional

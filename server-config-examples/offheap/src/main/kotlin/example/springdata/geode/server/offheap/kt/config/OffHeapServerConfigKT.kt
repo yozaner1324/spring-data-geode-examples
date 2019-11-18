@@ -1,7 +1,7 @@
 package example.springdata.geode.server.offheap.kt.config
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Product
+import example.springdata.geode.server.offheap.kt.domain.Customer
+import example.springdata.geode.server.offheap.kt.domain.Product
 import example.springdata.geode.server.offheap.kt.repo.CustomerRepositoryKT
 import org.apache.geode.cache.DataPolicy
 import org.apache.geode.cache.GemFireCache

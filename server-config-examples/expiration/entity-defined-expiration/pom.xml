@@ -12,14 +12,24 @@
     <artifactId>entity-defined-expiration</artifactId>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-geode</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>com.jayway.awaitility</groupId>
             <artifactId>awaitility</artifactId>
             <version>1.7.0</version>
         </dependency>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>1.3</version>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 

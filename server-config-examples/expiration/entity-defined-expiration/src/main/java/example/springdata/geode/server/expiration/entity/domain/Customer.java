@@ -1,27 +1,20 @@
 package example.springdata.geode.server.expiration.entity.domain;
 
-import example.springdata.geode.domain.Address;
-import example.springdata.geode.domain.EmailAddress;
-import example.springdata.geode.domain.Address;
-import example.springdata.geode.domain.EmailAddress;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.expiration.IdleTimeoutExpiration;
 import org.springframework.data.gemfire.expiration.TimeToLiveExpiration;
 import org.springframework.data.gemfire.mapping.annotation.Region;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity
 @Region(name = "Customers")
 @IdleTimeoutExpiration(action = "DESTROY", timeout = "2")
 @TimeToLiveExpiration(action = "DESTROY", timeout = "4")
 public class Customer implements Serializable {
     @Id
-    @javax.persistence.Id
     private Long id;
     private EmailAddress emailAddress;
     private String firstName;

@@ -1,19 +1,14 @@
 package example.springdata.geode.server.eviction;
 
-import example.springdata.geode.server.eviction.service.CustomerService;
-import example.springdata.geode.server.eviction.service.OrderService;
-import example.springdata.geode.server.eviction.service.ProductService;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
-import example.springdata.geode.server.eviction.service.CustomerService;
-import example.springdata.geode.server.eviction.service.OrderService;
-import example.springdata.geode.server.eviction.service.ProductService;
+import example.springdata.geode.server.eviction.kt.domain.Customer;
+import example.springdata.geode.server.eviction.kt.domain.Order;
+import example.springdata.geode.server.eviction.kt.domain.Product;
 import org.apache.geode.cache.Region;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,14 +31,7 @@ public class EvictionServerTest {
     @Resource(name = "Orders")
     private Region<Long, Order> orders;
 
-    @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private ProductService productService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Before
     public void clearMemory() {
@@ -52,18 +40,18 @@ public class EvictionServerTest {
 
     @Test
     public void customerRepositoryWasAutoConfiguredCorrectly() {
-        assertThat(this.customerService.size()).isEqualTo(300);
+        assertThat(this.customers.size()).isEqualTo(300);
     }
 
     @Test
     public void productRepositoryWasAutoConfiguredCorrectly() {
-        assertThat(this.productService.size()).isEqualTo(300);
+        assertThat(this.products.size()).isEqualTo(300);
     }
 
     @Test
     public void orderRepositoryWasAutoConfiguredCorrectly() {
-        long numOrders = this.orderService.size();
-        System.out.println("There are " + numOrders + " orders in the Orders region");
+        long numOrders = this.orders.size();
+        logger.info("There are " + numOrders + " orders in the Orders region");
         assertThat(numOrders).isEqualTo(10);
     }
 

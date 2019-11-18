@@ -1,7 +1,8 @@
 package example.springdata.geode.client.security.kt.client.repo
 
-import example.springdata.geode.client.common.kt.client.repo.BaseCustomerRepositoryKT
+import example.springdata.geode.client.security.kt.domain.Customer
 import org.springframework.data.gemfire.mapping.annotation.ClientRegion
+import org.springframework.data.repository.CrudRepository
 
 @ClientRegion(name = "Customers")
-interface CustomerRepositoryKT : BaseCustomerRepositoryKT
+interface CustomerRepositoryKT : CrudRepository<Customer, Long>

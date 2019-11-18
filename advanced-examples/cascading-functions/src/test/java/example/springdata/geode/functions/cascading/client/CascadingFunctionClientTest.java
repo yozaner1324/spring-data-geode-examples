@@ -1,15 +1,24 @@
 package example.springdata.geode.functions.cascading.client;
 
-import example.springdata.geode.functions.cascading.client.services.CustomerService;
-import example.springdata.geode.functions.cascading.client.services.OrderService;
-import example.springdata.geode.functions.cascading.server.CascadingFunctionServer;
-import example.springdata.geode.domain.*;
+import example.springdata.geode.functions.cascading.kt.domain.Address;
+import example.springdata.geode.functions.cascading.kt.domain.Customer;
+import example.springdata.geode.functions.cascading.kt.domain.EmailAddress;
+import example.springdata.geode.functions.cascading.kt.domain.LineItem;
+import example.springdata.geode.functions.cascading.kt.domain.Order;
+import example.springdata.geode.functions.cascading.kt.domain.Product;
 import example.springdata.geode.functions.cascading.client.config.CascadingFunctionClientConfig;
-import example.springdata.geode.functions.cascading.client.services.ProductService;
+import example.springdata.geode.functions.cascading.client.functions.CustomerFunctionExecutions;
+import example.springdata.geode.functions.cascading.client.functions.OrderFunctionExecutions;
+import example.springdata.geode.functions.cascading.client.repo.CustomerRepository;
+import example.springdata.geode.functions.cascading.client.repo.OrderRepository;
+import example.springdata.geode.functions.cascading.client.repo.ProductRepository;
+import example.springdata.geode.functions.cascading.server.CascadingFunctionServer;
 import org.apache.geode.cache.Region;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport;
@@ -24,20 +33,26 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = CascadingFunctionClientConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class CascadingFunctionClientTest extends ForkingClientServerIntegrationTestsSupport {
     @Autowired
-    private CustomerService customerService;
+    private CustomerRepository customerRepository;
 
     @Autowired
-    private OrderService orderService;
+    private OrderRepository orderRepository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CustomerFunctionExecutions customerFunctionExecutions;
+
+    @Autowired
+    private OrderFunctionExecutions orderFunctionExecutions;
 
     @Resource(name = "Customers")
     private Region<Long, Customer> customers;
@@ -47,6 +62,8 @@ public class CascadingFunctionClientTest extends ForkingClientServerIntegrationT
 
     @Resource(name = "Products")
     private Region<Long, Product> products;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @BeforeClass
     public static void setup() throws IOException {
@@ -78,17 +95,17 @@ public class CascadingFunctionClientTest extends ForkingClientServerIntegrationT
     @Test
     public void functionsExecuteCorrectly() {
         IntStream.rangeClosed(1, 10000).parallel().forEach(customerId ->
-                customerService.save(new Customer(Integer.toUnsignedLong(customerId), new EmailAddress("2@2.com"), "John"+customerId, "Smith" + customerId)));
+                customerRepository.save(new Customer(Integer.toUnsignedLong(customerId), new EmailAddress("2@2.com"), "John"+customerId, "Smith" + customerId)));
 
         assertThat(customers.keySetOnServer().size()).isEqualTo(10000);
 
-        productService.save(new Product(1L, "Apple iPod", new BigDecimal("99.99"), "An Apple portable music player"));
-        productService.save(new Product(2L, "Apple iPad", new BigDecimal("499.99"), "An Apple tablet device"));
+        productRepository.save(new Product(1L, "Apple iPod", new BigDecimal("99.99"), "An Apple portable music player"));
+        productRepository.save(new Product(2L, "Apple iPad", new BigDecimal("499.99"), "An Apple tablet device"));
 
         Product product = new Product(3L, "Apple macBook", new BigDecimal("899.99"), "An Apple notebook computer");
         product.addAttribute("warranty", "included");
 
-        productService.save(product);
+        productRepository.save(product);
 
         assertThat(products.keySetOnServer().size()).isEqualTo(3);
 
@@ -101,19 +118,19 @@ public class CascadingFunctionClientTest extends ForkingClientServerIntegrationT
                     IntStream.rangeClosed(1, random.nextInt(3) + 1).forEach(i -> {
                         int quantity = random.nextInt(3) + 1;
                         Long productId = (long) (random.nextInt(3) + 1);
-                        order.add(new LineItem(productService.findById(productId), quantity));
+                        order.add(new LineItem(productRepository.findById(productId).get(), quantity));
                     });
-                    orderService.save(order);
+                    orderRepository.save(order);
                 }));
 
         assertThat(orders.keySetOnServer().size()).isEqualTo(10);
 
-        List<Long> listAllCustomers = customerService.listAllCustomers();
+        List<Long> listAllCustomers = customerFunctionExecutions.listAllCustomers().get(0);
         assertThat(listAllCustomers.size()).isEqualTo(10000);
-        System.out.println("Number of customers retrieved from servers: " + listAllCustomers.size());
+        logger.info("Number of customers retrieved from servers: " + listAllCustomers.size());
 
-        List<Order> findOrdersForCustomer = orderService.findOrdersForCustomers(listAllCustomers);
+        List<Order> findOrdersForCustomer = orderFunctionExecutions.findOrdersForCustomers(listAllCustomers);
         assertThat(findOrdersForCustomer.size()).isEqualTo(10);
-        System.out.println(findOrdersForCustomer);
+        logger.info(findOrdersForCustomer.toString());
     }
 }

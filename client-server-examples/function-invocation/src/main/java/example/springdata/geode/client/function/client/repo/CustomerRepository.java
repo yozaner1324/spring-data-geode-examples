@@ -1,17 +1,17 @@
 package example.springdata.geode.client.function.client.repo;
 
-import example.springdata.geode.client.common.client.repo.BaseCustomerRepository;
-import example.springdata.geode.domain.Customer;
+import example.springdata.geode.client.function.domain.Customer;
 import org.springframework.data.gemfire.mapping.annotation.ClientRegion;
 import org.springframework.data.gemfire.repository.Query;
 import org.springframework.data.gemfire.repository.query.annotation.Hint;
 import org.springframework.data.gemfire.repository.query.annotation.Limit;
 import org.springframework.data.gemfire.repository.query.annotation.Trace;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 @ClientRegion("Customers")
-public interface CustomerRepository extends BaseCustomerRepository {
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
 
     @Trace
     @Limit(100)

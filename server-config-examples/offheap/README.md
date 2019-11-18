@@ -16,3 +16,5 @@ Your test output should contain output similar to the following:
 
     Entries in 'Customers' region are stored OFF heap
     Entries in 'Products' region are stored OFF heap
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

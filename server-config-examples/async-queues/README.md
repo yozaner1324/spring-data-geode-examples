@@ -18,3 +18,5 @@ Your test output should contain output similar to the following:
     Completed creating orders 
     orderProductSummary = OrderProductSummary(summaryKey=OrderProductSummaryKey(productId=3, timebucketStart=1567794309000), summaryAmount=2270674.77)
     orderProductSummary = OrderProductSummary(summaryKey=OrderProductSummaryKey(productId=3, timebucketStart=1567794310000), summaryAmount=3023966.40)
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

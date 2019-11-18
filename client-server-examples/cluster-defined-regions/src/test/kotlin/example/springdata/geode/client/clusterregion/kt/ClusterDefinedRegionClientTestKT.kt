@@ -1,15 +1,16 @@
 package example.springdata.geode.client.clusterregion.kt
 
 import example.springdata.geode.client.clusterregion.kt.client.config.ClusterDefinedRegionClientConfigKT
-import example.springdata.geode.client.clusterregion.kt.client.service.CustomerServiceKT
+import example.springdata.geode.client.clusterregion.kt.client.repo.CustomerRepositoryKT
+import example.springdata.geode.client.clusterregion.kt.domain.Customer
+import example.springdata.geode.client.clusterregion.kt.domain.EmailAddress
 import example.springdata.geode.client.clusterregion.kt.server.ClusterDefinedRegionServerKT
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.EmailAddress
 import org.apache.geode.cache.Region
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
@@ -25,10 +26,13 @@ import javax.annotation.Resource
 class ClusterDefinedRegionClientTestKT : ForkingClientServerIntegrationTestsSupport() {
 
     @Autowired
-    lateinit var customerService: CustomerServiceKT
+    lateinit var customerRepository: CustomerRepositoryKT
 
     @Resource(name = "Customers")
     lateinit var customers: Region<Long, Customer>
+
+    private val logger = LoggerFactory.getLogger(ClusterDefinedRegionClientTestKT::class.java)
+
 
     companion object {
 
@@ -41,9 +45,9 @@ class ClusterDefinedRegionClientTestKT : ForkingClientServerIntegrationTestsSupp
     }
 
     @Test
-    fun customerServiceWasConfiguredCorrectly() {
+    fun customerRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.customerService).isNotNull
+        assertThat(this.customerRepository).isNotNull
     }
 
     @Test
@@ -57,41 +61,41 @@ class ClusterDefinedRegionClientTestKT : ForkingClientServerIntegrationTestsSupp
 
     @Test
     fun customerRepositoryWasAutoConfiguredCorrectly() {
-        println("Inserting 3 entries for keys: 1, 2, 3")
+        logger.info("Inserting 3 entries for keys: 1, 2, 3")
         val john = Customer(1L, EmailAddress("2@2.com"), "John", "Smith")
         val frank = Customer(2L, EmailAddress("3@3.com"), "Frank", "Lamport")
         val jude = Customer(3L, EmailAddress("5@5.com"), "Jude", "Simmons")
-        customerService.save(john)
-        customerService.save(frank)
-        customerService.save(jude)
+        customerRepository.save(john)
+        customerRepository.save(frank)
+        customerRepository.save(jude)
 
-        val localEntries = customerService.numberEntriesStoredLocally()
+        val localEntries = customers.keys.size
         assertThat(localEntries).isEqualTo(0)
-        println("Entries on Client: $localEntries")
-        val serverEntries = customerService.numberEntriesStoredOnServer()
+        logger.info("Entries on Client: $localEntries")
+        val serverEntries = customers.keySetOnServer().size
         assertThat(serverEntries).isEqualTo(3)
-        println("Entries on Server: $serverEntries")
-        var all = customerService.findAll()
+        logger.info("Entries on Server: $serverEntries")
+        var all = customerRepository.findAll()
         assertThat(all.size).isEqualTo(3)
-        all.forEach { customer -> println("\t Entry: \n \t\t $customer") }
+        all.forEach { customer -> logger.info("\t Entry: \n \t\t $customer") }
 
-        println("Updating entry for key: 2")
-        var customer = customerService.findById(2L).get()
+        logger.info("Updating entry for key: 2")
+        var customer = customerRepository.findById(2L).get()
         assertThat(customer).isEqualTo(frank)
-        println("Entry Before: $customer")
+        logger.info("Entry Before: $customer")
         val sam = Customer(2L, EmailAddress("4@4.com"), "Sam", "Spacey")
-        customerService.save(sam)
-        customer = customerService.findById(2L).get()
+        customerRepository.save(sam)
+        customer = customerRepository.findById(2L).get()
         assertThat(customer).isEqualTo(sam)
-        println("Entry After: $customer")
+        logger.info("Entry After: $customer")
 
-        println("Removing entry for key: 3")
-        customerService.deleteById(3L)
-        assertThat<Customer>(customerService.findById(3L)).isEmpty
+        logger.info("Removing entry for key: 3")
+        customerRepository.deleteById(3L)
+        assertThat<Customer>(customerRepository.findById(3L)).isEmpty
 
-        println("Entries:")
-        all = customerService.findAll()
+        logger.info("Entries:")
+        all = customerRepository.findAll()
         assertThat(all.size).isEqualTo(2)
-        all.forEach { c -> println("\t Entry: \n \t\t $c") }
+        all.forEach { c -> logger.info("\t Entry: \n \t\t $c") }
     }
 }

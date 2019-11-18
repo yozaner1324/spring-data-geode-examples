@@ -24,19 +24,11 @@ import org.springframework.data.gemfire.config.annotation.CacheServerApplication
 import org.springframework.data.gemfire.config.annotation.EnableLocator;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 
-import example.springdata.geode.util.LoggingCacheListener;
-
 @Profile("default")
 @EnableLocator
 @EnablePdx
 @CacheServerApplication(port = 0, logLevel = "error")
 public class ServerApplicationConfig {
-
-	@Bean("loggingCacheListener")
-	@Profile("default")
-	LoggingCacheListener<Long, PdxInstance> getLoggingCacheListener() {
-		return new LoggingCacheListener<>();
-	}
 
 	@Bean("Customers")
 	@Profile("default")
@@ -46,7 +38,6 @@ public class ServerApplicationConfig {
 		replicatedRegionFactoryBean.setRegionName("Customers");
 		replicatedRegionFactoryBean.setScope(Scope.DISTRIBUTED_ACK);
 		replicatedRegionFactoryBean.setDataPolicy(DataPolicy.REPLICATE);
-		replicatedRegionFactoryBean.setCacheListeners(new LoggingCacheListener[] { getLoggingCacheListener() });
 		return replicatedRegionFactoryBean;
 	}
 }

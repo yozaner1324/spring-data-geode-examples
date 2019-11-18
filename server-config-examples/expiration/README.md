@@ -7,3 +7,5 @@ There are three examples located under expiration in the project structure. All 
 ## Running the example
 
 Once you've found the example you wish to run, simply run one of the tests from your IDE. All three tests should produce the same output.
+
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

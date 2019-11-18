@@ -17,17 +17,16 @@
 
 package example.springdata.geode.server.wan.substitution.filter;
 
+import example.springdata.geode.server.wan.domain.Customer;
 import org.apache.geode.cache.EntryEvent;
 import org.apache.geode.cache.wan.GatewayEventSubstitutionFilter;
 import org.springframework.stereotype.Component;
-
-import example.springdata.geode.domain.Customer;
 
 @Component
 public class WanEventSubstitutionFilter implements GatewayEventSubstitutionFilter<Long, Customer> {
 
 	@Override public Object getSubstituteValue(EntryEvent<Long, Customer> event) {
 		Customer customer = event.getNewValue();
-		return customer.copy(customer.getId(),customer.getEmailAddress(),customer.getFirstName(),customer.getLastName().substring(0,1));
+		return new Customer(customer.getId(),customer.getEmailAddress(),customer.getFirstName(),customer.getLastName().substring(0,1));
 	}
 }

@@ -1,15 +1,21 @@
 package example.springdata.geode.client.transactions.server.config;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
-import example.springdata.geode.util.CustomerTransactionListener;
-import example.springdata.geode.util.CustomerTransactionWriter;
-import example.springdata.geode.util.LoggingCacheListener;
-import org.apache.geode.cache.*;
+import example.springdata.geode.client.transactions.domain.Customer;
+import example.springdata.geode.client.transactions.server.utils.CustomerTransactionListener;
+import example.springdata.geode.client.transactions.server.utils.CustomerTransactionWriter;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.Scope;
+import org.apache.geode.cache.TransactionListener;
+import org.apache.geode.cache.TransactionWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.ReplicatedRegionFactoryBean;
-import org.springframework.data.gemfire.config.annotation.*;
+import org.springframework.data.gemfire.config.annotation.CacheServerApplication;
+import org.springframework.data.gemfire.config.annotation.EnableClusterConfiguration;
+import org.springframework.data.gemfire.config.annotation.EnableHttpService;
+import org.springframework.data.gemfire.config.annotation.EnableLocator;
+import org.springframework.data.gemfire.config.annotation.EnableManager;
+import org.springframework.data.gemfire.config.annotation.PeerCacheConfigurer;
 import org.springframework.data.gemfire.transaction.config.EnableGemfireCacheTransactions;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -23,11 +29,6 @@ import java.util.Collections;
 @EnableHttpService
 @CacheServerApplication
 public class TransactionalServerConfig {
-
-    @Bean
-    LoggingCacheListener loggingCacheListener() {
-        return new LoggingCacheListener();
-    }
 
     @Bean
     TransactionWriter customerTransactionWriter() {
@@ -53,27 +54,6 @@ public class TransactionalServerConfig {
         ReplicatedRegionFactoryBean replicatedRegionFactoryBean = new ReplicatedRegionFactoryBean();
         replicatedRegionFactoryBean.setCache(gemfireCache);
         replicatedRegionFactoryBean.setRegionName("Customers");
-        replicatedRegionFactoryBean.setDataPolicy(DataPolicy.REPLICATE);
-        replicatedRegionFactoryBean.setScope(Scope.DISTRIBUTED_ACK);
-        replicatedRegionFactoryBean.setCacheListeners(new CacheListener[]{loggingCacheListener()});
-        return replicatedRegionFactoryBean;
-    }
-
-    @Bean
-    ReplicatedRegionFactoryBean<Long, Order> createOrderRegion(GemFireCache gemfireCache) {
-        ReplicatedRegionFactoryBean replicatedRegionFactoryBean = new ReplicatedRegionFactoryBean();
-        replicatedRegionFactoryBean.setCache(gemfireCache);
-        replicatedRegionFactoryBean.setRegionName("Orders");
-        replicatedRegionFactoryBean.setDataPolicy(DataPolicy.REPLICATE);
-        replicatedRegionFactoryBean.setScope(Scope.DISTRIBUTED_ACK);
-        return replicatedRegionFactoryBean;
-    }
-
-    @Bean
-    ReplicatedRegionFactoryBean<Long, Product> createProductRegion(GemFireCache gemfireCache) {
-        ReplicatedRegionFactoryBean replicatedRegionFactoryBean = new ReplicatedRegionFactoryBean();
-        replicatedRegionFactoryBean.setCache(gemfireCache);
-        replicatedRegionFactoryBean.setRegionName("Products");
         replicatedRegionFactoryBean.setDataPolicy(DataPolicy.REPLICATE);
         replicatedRegionFactoryBean.setScope(Scope.DISTRIBUTED_ACK);
         return replicatedRegionFactoryBean;

@@ -1,8 +1,8 @@
 package example.springdata.geode.server.region;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.region.domain.Customer;
+import example.springdata.geode.server.region.domain.Order;
+import example.springdata.geode.server.region.domain.Product;
 import example.springdata.geode.server.region.repo.CustomerRepository;
 import example.springdata.geode.server.region.repo.OrderRepository;
 import example.springdata.geode.server.region.repo.ProductRepository;

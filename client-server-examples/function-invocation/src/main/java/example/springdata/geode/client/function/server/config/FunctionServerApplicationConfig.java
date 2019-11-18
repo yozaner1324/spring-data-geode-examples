@@ -1,12 +1,10 @@
 package example.springdata.geode.client.function.server.config;
 
 import example.springdata.geode.client.function.client.repo.CustomerRepository;
+import example.springdata.geode.client.function.domain.Customer;
+import example.springdata.geode.client.function.domain.Order;
+import example.springdata.geode.client.function.domain.Product;
 import example.springdata.geode.client.function.server.functions.CustomerFunctions;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
-import example.springdata.geode.util.LoggingCacheListener;
-import org.apache.geode.cache.CacheListener;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Scope;
@@ -32,18 +30,12 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 public class FunctionServerApplicationConfig {
 
     @Bean
-    LoggingCacheListener loggingCacheListener() {
-        return new LoggingCacheListener();
-    }
-
-    @Bean
     ReplicatedRegionFactoryBean<Long, Customer> createCustomerRegion(GemFireCache gemfireCache) {
         ReplicatedRegionFactoryBean replicatedRegionFactoryBean = new ReplicatedRegionFactoryBean();
         replicatedRegionFactoryBean.setCache(gemfireCache);
         replicatedRegionFactoryBean.setRegionName("Customers");
         replicatedRegionFactoryBean.setDataPolicy(DataPolicy.REPLICATE);
         replicatedRegionFactoryBean.setScope(Scope.DISTRIBUTED_ACK);
-        replicatedRegionFactoryBean.setCacheListeners(new CacheListener[]{loggingCacheListener()});
         return replicatedRegionFactoryBean;
     }
 

@@ -1,7 +1,7 @@
 package example.springdata.geode.server.asyncqueues.repo;
 
-import example.springdata.geode.domain.OrderProductSummary;
-import example.springdata.geode.domain.OrderProductSummaryKey;
+import example.springdata.geode.server.asyncqueues.domain.OrderProductSummary;
+import example.springdata.geode.server.asyncqueues.domain.OrderProductSummaryKey;
 import org.springframework.data.gemfire.mapping.annotation.Region;
 import org.springframework.data.gemfire.repository.Query;
 import org.springframework.data.gemfire.repository.query.annotation.Hint;

@@ -1,11 +1,19 @@
 package example.springdata.geode.server.asyncqueues;
 
-import example.springdata.geode.domain.*;
+import example.springdata.geode.server.asyncqueues.domain.OrderProductSummary;
+import example.springdata.geode.server.asyncqueues.domain.Address;
+import example.springdata.geode.server.asyncqueues.domain.Customer;
+import example.springdata.geode.server.asyncqueues.domain.EmailAddress;
+import example.springdata.geode.server.asyncqueues.domain.LineItem;
+import example.springdata.geode.server.asyncqueues.domain.Order;
+import example.springdata.geode.server.asyncqueues.domain.Product;
 import example.springdata.geode.server.asyncqueues.config.AsyncQueueServerConfig;
 import example.springdata.geode.server.asyncqueues.repo.CustomerRepository;
 import example.springdata.geode.server.asyncqueues.repo.OrderProductSummaryRepository;
 import example.springdata.geode.server.asyncqueues.repo.OrderRepository;
 import example.springdata.geode.server.asyncqueues.repo.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +28,9 @@ import java.util.stream.LongStream;
 
 @SpringBootApplication(scanBasePackageClasses = AsyncQueueServerConfig.class)
 public class AsyncQueueServer {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     public static void main(String[] args) {
         new SpringApplicationBuilder(AsyncQueueServer.class)
             .web(WebApplicationType.NONE)
@@ -37,10 +48,10 @@ public class AsyncQueueServer {
 
             createOrders(productRepository, orderRepository);
 
-            System.out.println("Completed creating orders ");
+            logger.info("Completed creating orders ");
 
             final List<OrderProductSummary> allForProductID = orderProductSummaryRepository.findAllForProductID(3L);
-            allForProductID.forEach(orderProductSummary -> System.out.println("orderProductSummary = " + orderProductSummary));
+            allForProductID.forEach(orderProductSummary -> logger.info("orderProductSummary = " + orderProductSummary));
         };
     }
 

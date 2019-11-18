@@ -13,15 +13,10 @@ package example.springdata.geode.client.serialization.server;/*
  * the License.
  */
 
-import java.util.Scanner;
-
-import org.springframework.boot.ApplicationRunner;
+import example.springdata.geode.client.serialization.server.config.ReadSerializedServerApplicationConfig;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
-
-import example.springdata.geode.client.serialization.server.config.ReadSerializedServerApplicationConfig;
 
 @SpringBootApplication(scanBasePackageClasses = ReadSerializedServerApplicationConfig.class)
 public class SerializationServer {
@@ -31,13 +26,5 @@ public class SerializationServer {
 			.web(WebApplicationType.NONE)
 			.build()
 			.run(args);
-	}
-
-	@Bean
-	public ApplicationRunner runner() {
-		return args -> {
-			System.out.println("Press <ENTER> to exit");
-			new Scanner(System.in, "UTF-8").nextLine();
-		};
 	}
 }

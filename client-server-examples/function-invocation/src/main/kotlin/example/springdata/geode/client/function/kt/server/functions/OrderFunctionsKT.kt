@@ -1,6 +1,6 @@
 package example.springdata.geode.client.function.kt.server.functions
 
-import example.springdata.geode.domain.Order
+import example.springdata.geode.client.function.kt.domain.Order
 import org.springframework.data.gemfire.function.annotation.GemfireFunction
 import org.springframework.data.gemfire.function.annotation.RegionData
 import org.springframework.stereotype.Component

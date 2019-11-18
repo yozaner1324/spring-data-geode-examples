@@ -1,6 +1,6 @@
 package example.springdata.geode.server.compression.config;
 
-import example.springdata.geode.domain.Customer;
+import example.springdata.geode.server.compression.domain.Customer;
 import example.springdata.geode.server.compression.repo.CustomerRepository;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;

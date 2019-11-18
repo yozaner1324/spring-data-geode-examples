@@ -22,3 +22,5 @@ Your test output should contain output similar to the following:
     Ending TTL wait period: 13/09/2019 04:28:36:404
     Starting Idle wait period: 13/09/2019 04:28:36:406
     Ending Idle wait period: 13/09/2019 04:28:38:414
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

@@ -1,11 +1,10 @@
 package example.springdata.geode.server.eviction.config;
 
 import com.github.javafaker.Faker;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.eviction.domain.Customer;
+import example.springdata.geode.server.eviction.domain.Order;
+import example.springdata.geode.server.eviction.domain.Product;
 import example.springdata.geode.server.eviction.repo.CustomerRepository;
-import example.springdata.geode.server.eviction.service.CustomerService;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.EvictionAction;
 import org.apache.geode.cache.EvictionAttributes;
@@ -14,7 +13,6 @@ import org.apache.geode.cache.Scope;
 import org.apache.geode.cache.util.ObjectSizer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.gemfire.DiskStoreFactoryBean;
 import org.springframework.data.gemfire.ReplicatedRegionFactoryBean;
@@ -35,7 +33,6 @@ import java.util.Collections;
         action = EvictionActionType.LOCAL_DESTROY,
         type = EvictionPolicyType.ENTRY_COUNT))
 @EnableGemfireRepositories(basePackageClasses = CustomerRepository.class)
-@ComponentScan(basePackageClasses = CustomerService.class)
 public class EvictionServerConfig {
     @Bean
     public Faker faker() {

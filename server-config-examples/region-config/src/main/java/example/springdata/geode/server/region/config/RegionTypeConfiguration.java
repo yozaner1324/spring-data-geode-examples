@@ -1,10 +1,9 @@
 package example.springdata.geode.server.region.config;
 
 import example.springdata.geode.server.region.repo.CustomerRepository;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
-import example.springdata.geode.server.region.repo.CustomerRepository;
+import example.springdata.geode.server.region.domain.Customer;
+import example.springdata.geode.server.region.domain.Order;
+import example.springdata.geode.server.region.domain.Product;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.PartitionAttributes;

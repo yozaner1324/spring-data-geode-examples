@@ -9,4 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>async-queues</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-geode</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
 </project>

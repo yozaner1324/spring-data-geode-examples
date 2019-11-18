@@ -1,16 +1,20 @@
 package example.springdata.geode.client.function.client.kt
 
 import example.springdata.geode.client.function.kt.client.config.FunctionInvocationClientApplicationConfigKT
-import example.springdata.geode.client.function.kt.client.services.CustomerServiceKT
-import example.springdata.geode.client.function.kt.client.services.OrderServiceKT
-import example.springdata.geode.client.function.kt.client.services.ProductServiceKT
+import example.springdata.geode.client.function.kt.client.functions.CustomerFunctionExecutionsKT
+import example.springdata.geode.client.function.kt.client.functions.OrderFunctionExecutionsKT
+import example.springdata.geode.client.function.kt.client.functions.ProductFunctionExecutionsKT
+import example.springdata.geode.client.function.kt.client.repo.CustomerRepositoryKT
+import example.springdata.geode.client.function.kt.client.repo.OrderRepositoryKT
+import example.springdata.geode.client.function.kt.client.repo.ProductRepositoryKT
+import example.springdata.geode.client.function.kt.domain.*
 import example.springdata.geode.client.function.kt.server.FunctionServerKT
-import example.springdata.geode.domain.*
 import org.apache.geode.cache.Region
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
@@ -29,13 +33,13 @@ import javax.annotation.Resource
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class FunctionInvocationClientTestKT : ForkingClientServerIntegrationTestsSupport() {
     @Autowired
-    lateinit var customerService: CustomerServiceKT
+    lateinit var customerRepository: CustomerRepositoryKT
 
     @Autowired
-    lateinit var orderService: OrderServiceKT
+    lateinit var orderRepository: OrderRepositoryKT
 
     @Autowired
-    lateinit var productService: ProductServiceKT
+    lateinit var productRepository: ProductRepositoryKT
 
     @Resource(name = "Customers")
     lateinit var customers: Region<Long, Customer>
@@ -44,8 +48,18 @@ class FunctionInvocationClientTestKT : ForkingClientServerIntegrationTestsSuppor
     lateinit var orders: Region<Long, Order>
 
     @Resource(name = "Products")
-    lateinit var 
-            products: Region<Long, Product>
+    lateinit var products: Region<Long, Product>
+
+    @Autowired
+    lateinit var customerFunctionExecutions: CustomerFunctionExecutionsKT
+
+    @Autowired
+    lateinit var orderFunctionExecutions: OrderFunctionExecutionsKT
+
+    @Autowired
+    lateinit var productFunctionExecutions: ProductFunctionExecutionsKT
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     companion object {
         @BeforeClass
@@ -57,9 +71,9 @@ class FunctionInvocationClientTestKT : ForkingClientServerIntegrationTestsSuppor
     }
 
     @Test
-    fun customerServiceWasConfiguredCorrectly() {
+    fun customerRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.customerService).isNotNull
+        assertThat(this.customerRepository).isNotNull
     }
 
     @Test
@@ -90,57 +104,57 @@ class FunctionInvocationClientTestKT : ForkingClientServerIntegrationTestsSuppor
     }
 
     @Test
-    fun orderServiceWasConfiguredCorrectly() {
+    fun orderRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.orderService).isNotNull
+        assertThat(this.orderRepository).isNotNull
     }
 
     @Test
-    fun productServiceWasConfiguredCorrectly() {
+    fun productRepositoryWasConfiguredCorrectly() {
 
-        assertThat(this.productService).isNotNull
+        assertThat(this.productRepository).isNotNull
     }
 
     @Test
     fun functionsExecuteCorrectly() {
         createCustomerData()
 
-        val cust = customerService.listAllCustomersForEmailAddress("2@2.com", "3@3.com")
+        val cust = customerFunctionExecutions.listAllCustomersForEmailAddress("2@2.com", "3@3.com")[0]
         assertThat(cust.size).isEqualTo(2)
-        println("All customers for emailAddresses:3@3.com,2@2.com using function invocation: \n\t $cust")
+        logger.info("All customers for emailAddresses:3@3.com,2@2.com using function invocation: \n\t $cust")
 
         createProducts()
-        var sum = productService.sumPricesForAllProducts()[0]
+        var sum = productFunctionExecutions.sumPricesForAllProducts()[0]
         assertThat(sum).isEqualTo(BigDecimal.valueOf(1499.97))
-        println("Running function to sum up all product prices: \n\t$sum")
+        logger.info("Running function to sum up all product prices: \n\t$sum")
 
         createOrders()
 
-        sum = orderService.sumPricesForAllProductsForOrder(1L)[0]
+        sum = orderFunctionExecutions.sumPricesForAllProductsForOrder(1L)[0]
         assertThat(sum).isGreaterThanOrEqualTo(BigDecimal.valueOf(99.99))
-        println("Running function to sum up all order lineItems prices for order 1: \n\t$sum")
-        val order = orderService.findById(1L)
-        println("For order: \n\t $order")
+        logger.info("Running function to sum up all order lineItems prices for order 1: \n\t$sum")
+        val order = orderRepository.findById(1L)
+        logger.info("For order: \n\t $order")
     }
 
     fun createCustomerData() {
 
-        println("Inserting 3 entries for keys: 1, 2, 3")
-        customerService.save(Customer(1L, EmailAddress("2@2.com"), "John", "Smith"))
-        customerService.save(Customer(2L, EmailAddress("3@3.com"), "Frank", "Lamport"))
-        customerService.save(Customer(3L, EmailAddress("5@5.com"), "Jude", "Simmons"))
+        logger.info("Inserting 3 entries for keys: 1, 2, 3")
+        customerRepository.save(Customer(1L, EmailAddress("2@2.com"), "John", "Smith"))
+        customerRepository.save(Customer(2L, EmailAddress("3@3.com"), "Frank", "Lamport"))
+        customerRepository.save(Customer(3L, EmailAddress("5@5.com"), "Jude", "Simmons"))
         assertThat(customers.keySetOnServer().size).isEqualTo(3)
     }
 
     fun createProducts() {
-        productService.save(Product(1L, "Apple iPod", BigDecimal("99.99"),
+        productRepository.save(Product(1L, "Apple iPod", BigDecimal("99.99"),
                 "An Apple portable music player"))
-        productService.save(Product(2L, "Apple iPad", BigDecimal("499.99"),
+        productRepository.save(Product(2L, "Apple iPad", BigDecimal("499.99"),
                 "An Apple tablet device"))
         val macbook = Product(3L, "Apple macBook", BigDecimal("899.99"),
                 "An Apple notebook computer")
         macbook.addAttribute("warranty", "included")
-        productService.save(macbook)
+        productRepository.save(macbook)
         assertThat(products.keySetOnServer().size).isEqualTo(3)
     }
 
@@ -153,9 +167,9 @@ class FunctionInvocationClientTestKT : ForkingClientServerIntegrationTestsSuppor
                 IntStream.rangeClosed(0, random.nextInt(3) + 1).forEach { lineItemCount ->
                     val quantity = random.nextInt(3) + 1
                     val productId = (random.nextInt(3) + 1).toLong()
-                    order.add(LineItem(productService.findById(productId), quantity))
+                    order.add(LineItem(productRepository.findById(productId).get(), quantity))
                 }
-                orderService.save(order)
+                orderRepository.save(order)
             }
         }
         assertThat(orders.keySetOnServer().size).isEqualTo(100)

@@ -1,15 +1,16 @@
 package example.springdata.geode.client.transactions.client.kt
 
+import example.springdata.geode.client.transactions.domain.Customer
+import example.springdata.geode.client.transactions.domain.EmailAddress
 import example.springdata.geode.client.transactions.kt.client.config.TransactionalClientConfigKT
 import example.springdata.geode.client.transactions.kt.client.service.CustomerServiceKT
 import example.springdata.geode.client.transactions.kt.server.TransactionalServerKT
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.EmailAddress
 import org.apache.geode.cache.Region
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.gemfire.tests.integration.ForkingClientServerIntegrationTestsSupport
@@ -28,6 +29,8 @@ class TransactionalClientTestKT : ForkingClientServerIntegrationTestsSupport() {
 
     @Resource(name = "Customers")
     lateinit var customers: Region<Long, Customer>
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     companion object {
         @BeforeClass
@@ -56,16 +59,16 @@ class TransactionalClientTestKT : ForkingClientServerIntegrationTestsSupport() {
     @Test
     fun repositoryWasAutoConfiguredCorrectly() {
 
-        println("Number of Entries stored before = " + customerService.numberEntriesStoredOnServer())
+        logger.info("Number of Entries stored before = " + customerService.numberEntriesStoredOnServer())
         customerService.createFiveCustomers()
         assertThat(customerService.numberEntriesStoredOnServer()).isEqualTo(5)
-        println("Number of Entries stored after = " + customerService.numberEntriesStoredOnServer())
-        println("Customer for ID before (transaction commit success) = " + customerService.findById(2L).get())
+        logger.info("Number of Entries stored after = " + customerService.numberEntriesStoredOnServer())
+        logger.info("Customer for ID before (transaction commit success) = " + customerService.findById(2L).get())
         customerService.updateCustomersSuccess()
         assertThat(customerService.numberEntriesStoredOnServer()).isEqualTo(5)
         var customer = customerService.findById(2L).get()
         assertThat(customer.firstName).isEqualTo("Humpty")
-        println("Customer for ID after (transaction commit success) = $customer")
+        logger.info("Customer for ID after (transaction commit success) = $customer")
         try {
             customerService.updateCustomersFailure()
         } catch (exception: IllegalArgumentException) {
@@ -73,7 +76,7 @@ class TransactionalClientTestKT : ForkingClientServerIntegrationTestsSupport() {
 
         customer = customerService.findById(2L).get()
         assertThat(customer.firstName).isEqualTo("Humpty")
-        println("Customer for ID after (transaction commit failure) = " + customerService.findById(2L).get())
+        logger.info("Customer for ID after (transaction commit failure) = " + customerService.findById(2L).get())
 
         val numpty = Customer(2L, EmailAddress("2@2.com"), "Numpty", "Hamilton")
         val frumpy = Customer(2L, EmailAddress("2@2.com"), "Frumpy", "Hamilton")
@@ -81,6 +84,6 @@ class TransactionalClientTestKT : ForkingClientServerIntegrationTestsSupport() {
         customerService.updateCustomersWithDelay(10, frumpy)
         customer = customerService.findById(2L).get()
         assertThat(customer).isEqualTo(frumpy)
-        println("Customer for ID after 2 updates with delay = $customer")
+        logger.info("Customer for ID after 2 updates with delay = $customer")
     }
 }

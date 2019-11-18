@@ -2,7 +2,7 @@ package example.springdata.geode.client.transactions.client.config;
 
 import example.springdata.geode.client.transactions.client.repo.CustomerRepository;
 import example.springdata.geode.client.transactions.client.service.CustomerService;
-import example.springdata.geode.domain.Customer;
+import example.springdata.geode.client.transactions.domain.Customer;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.springframework.context.annotation.Bean;

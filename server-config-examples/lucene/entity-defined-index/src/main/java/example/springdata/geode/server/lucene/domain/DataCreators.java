@@ -3,7 +3,6 @@ package example.springdata.geode.server.lucene.domain;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Internet;
 import com.github.javafaker.Name;
-import example.springdata.geode.domain.EmailAddress;
 import org.springframework.data.repository.CrudRepository;
 
 public class DataCreators {

@@ -1,9 +1,9 @@
 package example.springdata.geode.server.asyncqueues.kt
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Order
-import example.springdata.geode.domain.OrderProductSummary
-import example.springdata.geode.domain.Product
+import example.springdata.geode.server.asyncqueues.kt.domain.Customer
+import example.springdata.geode.server.asyncqueues.kt.domain.Order
+import example.springdata.geode.server.asyncqueues.kt.domain.OrderProductSummary
+import example.springdata.geode.server.asyncqueues.kt.domain.Product
 import example.springdata.geode.server.asyncqueues.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.asyncqueues.kt.repo.OrderProductSummaryRepositoryKT
 import example.springdata.geode.server.asyncqueues.kt.repo.OrderRepositoryKT

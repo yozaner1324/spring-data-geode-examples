@@ -1,8 +1,8 @@
 package example.springdata.geode.server.asyncqueues.kt.listener
 
-import example.springdata.geode.domain.Order
-import example.springdata.geode.domain.OrderProductSummary
-import example.springdata.geode.domain.OrderProductSummaryKey
+import example.springdata.geode.server.asyncqueues.kt.domain.Order
+import example.springdata.geode.server.asyncqueues.kt.domain.OrderProductSummary
+import example.springdata.geode.server.asyncqueues.kt.domain.OrderProductSummaryKey
 import org.apache.geode.cache.Region
 import org.apache.geode.cache.asyncqueue.AsyncEvent
 import org.apache.geode.cache.asyncqueue.AsyncEventListener

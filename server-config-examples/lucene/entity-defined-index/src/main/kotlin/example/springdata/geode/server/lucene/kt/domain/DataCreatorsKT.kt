@@ -1,7 +1,6 @@
 package example.springdata.geode.server.lucene.kt.domain
 
 import com.github.javafaker.Faker
-import example.springdata.geode.domain.EmailAddress
 import org.springframework.data.repository.CrudRepository
 
 fun createLuceneCustomers(numberOfCustomer: Int, repository: CrudRepository<CustomerKT, Long>) {

@@ -1,13 +1,14 @@
 package example.springdata.geode.server.offheap.kt
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Product
+import example.springdata.geode.server.offheap.kt.domain.Customer
+import example.springdata.geode.server.offheap.kt.domain.Product
 import example.springdata.geode.server.offheap.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.offheap.kt.repo.ProductRepositoryKT
 import org.apache.geode.cache.Region
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
@@ -31,6 +32,8 @@ class OffHeapServerKTTest {
     @Autowired
     lateinit var productRepository: ProductRepositoryKT
 
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @Test
     fun customerRepositoryIsAutoConfiguredCorrectly() {
         assertThat(customerRepository.count()).isEqualTo(3000)
@@ -46,7 +49,7 @@ class OffHeapServerKTTest {
         assertThat(customers.attributes.offHeap).isTrue()
         assertThat(products.attributes.offHeap).isTrue()
 
-        println("Entries in 'Customers' region are stored " + (if (customers.attributes.offHeap) "OFF" else "ON") + " heap")
-        println("Entries in 'Products' region are stored " + (if (products.attributes.offHeap) "OFF" else "ON") + " heap")
+        logger.info("Entries in 'Customers' region are stored " + (if (customers.attributes.offHeap) "OFF" else "ON") + " heap")
+        logger.info("Entries in 'Products' region are stored " + (if (products.attributes.offHeap) "OFF" else "ON") + " heap")
     }
 }

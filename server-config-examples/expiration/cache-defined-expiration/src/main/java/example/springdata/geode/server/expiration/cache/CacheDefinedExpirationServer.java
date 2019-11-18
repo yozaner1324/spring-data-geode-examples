@@ -1,7 +1,6 @@
 package example.springdata.geode.server.expiration.cache;
 
 import example.springdata.geode.server.expiration.cache.config.CacheDefinedExpirationServerConfig;
-import example.springdata.geode.server.expiration.cache.config.CacheDefinedExpirationServerConfig;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

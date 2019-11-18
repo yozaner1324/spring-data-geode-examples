@@ -1,9 +1,11 @@
 package example.springdata.geode.server.eventhandlers.kt.config
 
-import example.springdata.geode.domain.Customer
-import example.springdata.geode.domain.Product
+import example.springdata.geode.server.eventhandlers.kt.domain.Customer
+import example.springdata.geode.server.eventhandlers.kt.domain.Product
 import example.springdata.geode.server.eventhandlers.kt.repo.CustomerRepositoryKT
-import example.springdata.geode.util.LoggingCacheListener
+import example.springdata.geode.server.eventhandlers.kt.utils.CustomerCacheWriterKT
+import example.springdata.geode.server.eventhandlers.kt.utils.LoggingCacheListenerKT
+import example.springdata.geode.server.eventhandlers.kt.utils.ProductCacheLoaderKT
 import org.apache.geode.cache.*
 import org.springframework.context.annotation.Bean
 import org.springframework.data.gemfire.PartitionedRegionFactoryBean
@@ -16,7 +18,7 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 class EventHandlerServerConfigurationKT {
 
     @Bean
-    fun loggingCacheListener(): CacheListener<*, *> = LoggingCacheListener<Any, Any>()
+    fun loggingCacheListener(): CacheListener<*, *> = LoggingCacheListenerKT<Any, Any>()
 
     @Bean
     fun customerCacheWriter(): CacheWriter<Long, Customer> = CustomerCacheWriterKT()
@@ -39,8 +41,8 @@ class EventHandlerServerConfigurationKT {
 
     @Bean("Customers")
     fun createCustomerRegion(gemFireCache: GemFireCache,
-                                      customerCacheWriter: CacheWriter<Long, Customer>,
-                                      loggingCacheListener: CacheListener<*, *>): PartitionedRegionFactoryBean<Long, Customer> {
+                             customerCacheWriter: CacheWriter<Long, Customer>,
+                             loggingCacheListener: CacheListener<*, *>): PartitionedRegionFactoryBean<Long, Customer> {
         return PartitionedRegionFactoryBean<Long, Customer>()
                 .apply {
                     cache = gemFireCache

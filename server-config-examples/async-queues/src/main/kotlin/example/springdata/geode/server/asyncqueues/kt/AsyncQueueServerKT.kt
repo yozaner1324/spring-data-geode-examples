@@ -1,11 +1,12 @@
 package example.springdata.geode.server.asyncqueues.kt
 
-import example.springdata.geode.domain.*
 import example.springdata.geode.server.asyncqueues.kt.config.AsyncQueueServerConfigKT
+import example.springdata.geode.server.asyncqueues.kt.domain.*
 import example.springdata.geode.server.asyncqueues.kt.repo.CustomerRepositoryKT
 import example.springdata.geode.server.asyncqueues.kt.repo.OrderProductSummaryRepositoryKT
 import example.springdata.geode.server.asyncqueues.kt.repo.OrderRepositoryKT
 import example.springdata.geode.server.asyncqueues.kt.repo.ProductRepositoryKT
+import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -17,6 +18,8 @@ import java.util.*
 @SpringBootApplication(scanBasePackageClasses = [AsyncQueueServerConfigKT::class])
 class AsyncQueueServerKT {
 
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @Bean
     fun runner(customerRepository: CustomerRepositoryKT, orderRepository: OrderRepositoryKT,
                productRepository: ProductRepositoryKT, orderProductSummaryRepository: OrderProductSummaryRepositoryKT) =
@@ -27,10 +30,10 @@ class AsyncQueueServerKT {
 
                 createOrders(productRepository, orderRepository)
 
-                println("Completed creating orders ")
+                logger.info("Completed creating orders ")
 
                 val allForProductID = orderProductSummaryRepository.findAllForProductID(3L)
-                allForProductID.forEach { orderProductSummary -> println("orderProductSummary = $orderProductSummary") }
+                allForProductID.forEach { orderProductSummary -> logger.info("orderProductSummary = $orderProductSummary") }
             }
 
     private fun createOrders(productRepository: ProductRepositoryKT, orderRepository: OrderRepositoryKT) {

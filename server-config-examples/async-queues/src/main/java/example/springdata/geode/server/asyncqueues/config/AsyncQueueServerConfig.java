@@ -1,11 +1,16 @@
 package example.springdata.geode.server.asyncqueues.config;
 
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.domain.Order;
-import example.springdata.geode.domain.Product;
+import example.springdata.geode.server.asyncqueues.domain.Customer;
+import example.springdata.geode.server.asyncqueues.domain.Order;
+import example.springdata.geode.server.asyncqueues.domain.Product;
 import example.springdata.geode.server.asyncqueues.listener.OrderAsyncQueueListener;
 import example.springdata.geode.server.asyncqueues.repo.CustomerRepository;
-import org.apache.geode.cache.*;
+import org.apache.geode.cache.Cache;
+import org.apache.geode.cache.DataPolicy;
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.PartitionAttributes;
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.RegionAttributes;
 import org.apache.geode.cache.asyncqueue.AsyncEventListener;
 import org.apache.geode.cache.asyncqueue.AsyncEventQueue;
 import org.springframework.beans.factory.annotation.Qualifier;

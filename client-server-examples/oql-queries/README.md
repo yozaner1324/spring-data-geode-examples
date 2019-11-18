@@ -38,3 +38,5 @@ Your output from the test `customerRepositoryWasAutoConfiguredCorrectly` should 
     [FORK] - 
     Find customers with firstName=Jude: [Customer(id=1, emailAddress=EmailAddress(value=3@3.com), firstName=Jude, lastName=Smith), Customer(id=3, emailAddress=EmailAddress(value=5@5.com), firstName=Jude, lastName=Simmons)]
     Find customers with firstName=Jude on local client region: []
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

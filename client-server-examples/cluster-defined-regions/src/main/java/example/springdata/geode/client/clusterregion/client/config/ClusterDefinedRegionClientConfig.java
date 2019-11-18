@@ -1,9 +1,7 @@
 package example.springdata.geode.client.clusterregion.client.config;
 
 import example.springdata.geode.client.clusterregion.client.repo.CustomerRepository;
-import example.springdata.geode.client.clusterregion.client.service.CustomerService;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableClusterConfiguration;
 import org.springframework.data.gemfire.config.annotation.EnableClusterDefinedRegions;
@@ -13,7 +11,6 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 @ClientCacheApplication(logLevel = "error")
 @EnableClusterDefinedRegions(clientRegionShortcut = ClientRegionShortcut.PROXY)
 @EnableGemfireRepositories(basePackageClasses = CustomerRepository.class)
-@ComponentScan(basePackageClasses = CustomerService.class)
 @EnableIndexing
 @EnableClusterConfiguration
 public class ClusterDefinedRegionClientConfig {

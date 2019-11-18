@@ -17,3 +17,5 @@ Your test output should contain output similar to the following:
     [FORK] - Inserting 301 entries on siteA
     
     301 entries replicated to siteB
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

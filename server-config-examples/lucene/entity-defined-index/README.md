@@ -26,3 +26,5 @@ Your test output should contain output similar to the following:
     Customer(id=31, emailAddress=EmailAddress(value=christiana.windler@yahoo.com), firstName=Damaris, lastName=Dickens)
     Customer(id=138, emailAddress=EmailAddress(value=kole.kerluke@yahoo.com), firstName=Rhianna, lastName=Donnelly)
     Customer(id=19, emailAddress=EmailAddress(value=elise.macejkovic@hotmail.com), firstName=Jamir, lastName=Doyle)
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

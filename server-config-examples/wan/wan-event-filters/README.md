@@ -19,3 +19,5 @@ Your test output should contain output similar to the following:
     ...
     
     150 entries replicated to siteA
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

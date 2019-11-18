@@ -24,4 +24,6 @@ Your test output should contain output similar to the following:
     In region [Products] created key [5] value [Aerodynamic Wool Gloves @ 76.44]
     product = Aerodynamic Wool Gloves @ 76.44
     
-The product may differ from the example run above since it is randomly selected.
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.
+
+NOTE: The product may differ from the example run above since it is randomly selected.

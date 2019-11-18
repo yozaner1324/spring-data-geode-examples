@@ -1,7 +1,6 @@
 package example.springdata.geode.server.wan.server.siteA.config;
 
 import example.springdata.geode.server.wan.config.WanEnabledServerCommonConfig;
-import example.springdata.geode.server.wan.config.WanEnabledServerCommonConfig;
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.GemFireCache;
 import org.springframework.context.annotation.Bean;

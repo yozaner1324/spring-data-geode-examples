@@ -1,11 +1,9 @@
 package example.springdata.geode.client.security.server.config;
 
+import example.springdata.geode.client.security.domain.Customer;
 import example.springdata.geode.client.security.kt.server.managers.SimpleSecurityManager;
 import example.springdata.geode.client.security.kt.server.repo.JdbcSecurityRepository;
 import example.springdata.geode.client.security.kt.server.repo.SecurityRepository;
-import example.springdata.geode.domain.Customer;
-import example.springdata.geode.util.LoggingCacheListener;
-import org.apache.geode.cache.CacheListener;
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.Scope;
@@ -30,10 +28,6 @@ import javax.sql.DataSource;
 @EnableManager
 @CacheServerApplication(port = 0, logLevel = "error")
 public class SecurityEnabledServerConfiguration {
-    @Bean
-    LoggingCacheListener loggingCacheListener() {
-        return new LoggingCacheListener();
-    }
 
     @Bean
     ReplicatedRegionFactoryBean<Long, Customer> createCustomerRegion(GemFireCache gemfireCache) {
@@ -42,7 +36,6 @@ public class SecurityEnabledServerConfiguration {
         replicatedRegionFactoryBean.setRegionName("Customers");
         replicatedRegionFactoryBean.setDataPolicy(DataPolicy.REPLICATE);
         replicatedRegionFactoryBean.setScope(Scope.DISTRIBUTED_ACK);
-        replicatedRegionFactoryBean.setCacheListeners(new CacheListener[]{loggingCacheListener()});
         return replicatedRegionFactoryBean;
     }
 }
