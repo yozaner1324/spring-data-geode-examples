@@ -1,7 +1,7 @@
 package example.springdata.geode.client.basic.client.config;
 
 import example.springdata.geode.client.basic.client.repo.CustomerRepository;
-import example.springdata.geode.client.basic.kt.domain.Customer;
+import example.springdata.geode.client.basic.domain.Customer;
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.springframework.context.annotation.Bean;

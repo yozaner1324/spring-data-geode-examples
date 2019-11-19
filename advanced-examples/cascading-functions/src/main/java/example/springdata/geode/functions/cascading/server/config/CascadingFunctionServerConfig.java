@@ -1,8 +1,8 @@
 package example.springdata.geode.functions.cascading.server.config;
 
-import example.springdata.geode.functions.cascading.kt.domain.Customer;
-import example.springdata.geode.functions.cascading.kt.domain.Order;
-import example.springdata.geode.functions.cascading.kt.domain.Product;
+import example.springdata.geode.functions.cascading.domain.Customer;
+import example.springdata.geode.functions.cascading.domain.Order;
+import example.springdata.geode.functions.cascading.domain.Product;
 import example.springdata.geode.functions.cascading.server.functions.CascadingFunctions;
 import org.apache.geode.cache.DataPolicy;
 import org.springframework.context.annotation.Bean;

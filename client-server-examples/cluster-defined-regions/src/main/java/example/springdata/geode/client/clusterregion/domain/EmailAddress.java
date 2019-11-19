@@ -16,8 +16,6 @@
 
 package example.springdata.geode.client.clusterregion.domain;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serializable;
 
 /**
@@ -34,7 +32,7 @@ public class EmailAddress implements Serializable {
 		this.value = value;
 	}
 
-	public boolean equals(@Nullable Object other) {
+	public boolean equals(Object other) {
 		if (this != other) {
 			if (other instanceof EmailAddress) {
 				EmailAddress emailAddress = (EmailAddress) other;

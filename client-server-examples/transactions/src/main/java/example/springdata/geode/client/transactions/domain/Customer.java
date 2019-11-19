@@ -16,7 +16,6 @@
 
 package example.springdata.geode.client.transactions.domain;
 
-import org.jetbrains.annotations.Nullable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.mapping.annotation.Region;
 
@@ -58,7 +57,7 @@ public class Customer implements Serializable {
         return id != null ? id.hashCode() : 0;
     }
 
-    public boolean equals(@Nullable Object other) {
+    public boolean equals(Object other) {
         if (this != other) {
             if (other instanceof Customer) {
                 Customer customer = (Customer)other;

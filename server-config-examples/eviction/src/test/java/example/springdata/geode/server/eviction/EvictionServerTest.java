@@ -1,8 +1,8 @@
 package example.springdata.geode.server.eviction;
 
-import example.springdata.geode.server.eviction.kt.domain.Customer;
-import example.springdata.geode.server.eviction.kt.domain.Order;
-import example.springdata.geode.server.eviction.kt.domain.Product;
+import example.springdata.geode.server.eviction.domain.Customer;
+import example.springdata.geode.server.eviction.domain.Order;
+import example.springdata.geode.server.eviction.domain.Product;
 import org.apache.geode.cache.Region;
 import org.junit.Before;
 import org.junit.Test;

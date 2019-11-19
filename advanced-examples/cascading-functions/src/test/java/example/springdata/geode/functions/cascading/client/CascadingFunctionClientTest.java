@@ -1,11 +1,11 @@
 package example.springdata.geode.functions.cascading.client;
 
-import example.springdata.geode.functions.cascading.kt.domain.Address;
-import example.springdata.geode.functions.cascading.kt.domain.Customer;
-import example.springdata.geode.functions.cascading.kt.domain.EmailAddress;
-import example.springdata.geode.functions.cascading.kt.domain.LineItem;
-import example.springdata.geode.functions.cascading.kt.domain.Order;
-import example.springdata.geode.functions.cascading.kt.domain.Product;
+import example.springdata.geode.functions.cascading.domain.Address;
+import example.springdata.geode.functions.cascading.domain.Customer;
+import example.springdata.geode.functions.cascading.domain.EmailAddress;
+import example.springdata.geode.functions.cascading.domain.LineItem;
+import example.springdata.geode.functions.cascading.domain.Order;
+import example.springdata.geode.functions.cascading.domain.Product;
 import example.springdata.geode.functions.cascading.client.config.CascadingFunctionClientConfig;
 import example.springdata.geode.functions.cascading.client.functions.CustomerFunctionExecutions;
 import example.springdata.geode.functions.cascading.client.functions.OrderFunctionExecutions;
@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -112,9 +113,9 @@ public class CascadingFunctionClientTest extends ForkingClientServerIntegrationT
         Random random = new Random(System.nanoTime());
         Address address = new Address("it", "doesn't", "matter");
 
-        IntStream.rangeClosed(1, 10).forEach(orderId ->
-                IntStream.rangeClosed(1, 10).forEach(customerId -> {
-                    Order order = new Order(Integer.toUnsignedLong(orderId), customerId, address);
+        LongStream.rangeClosed(1, 10).forEach(orderId ->
+                LongStream.rangeClosed(1, 10).forEach(customerId -> {
+                    Order order = new Order(orderId, customerId, address);
                     IntStream.rangeClosed(1, random.nextInt(3) + 1).forEach(i -> {
                         int quantity = random.nextInt(3) + 1;
                         Long productId = (long) (random.nextInt(3) + 1);

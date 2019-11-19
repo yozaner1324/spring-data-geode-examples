@@ -1,7 +1,7 @@
 package example.springdata.geode.functions.cascading.server.functions;
 
-import example.springdata.geode.functions.cascading.kt.domain.Customer;
-import example.springdata.geode.functions.cascading.kt.domain.Order;
+import example.springdata.geode.functions.cascading.domain.Customer;
+import example.springdata.geode.functions.cascading.domain.Order;
 import org.apache.geode.cache.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

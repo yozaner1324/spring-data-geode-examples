@@ -42,6 +42,13 @@ class XmlSecurityRepository
 @JvmOverloads constructor(
         private val rolesPermissions: Resource = ClassPathResource(ROLES_PERMISSIONS_XML),
         private val usersRoles: Resource = ClassPathResource(USERS_ROLES_XML)) : CachingSecurityRepository(), InitializingBean {
+    override fun save(user: User): User {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun delete(user: User?): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
         private const val ROLES_PERMISSIONS_XML = "roles-permissions.xml"

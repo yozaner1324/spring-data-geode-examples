@@ -82,4 +82,8 @@ public class Order implements Serializable {
         return "Order(id="  + id + ", customerId=" + customerId + ", billingAddress=" + billingAddress +
                 ", shippingAddress=" + shippingAddress + ") \n\t" + "LineItems:" + lineItems;
     }
+
+  public Long getCustomerId() {
+        return this.customerId;
+  }
 }

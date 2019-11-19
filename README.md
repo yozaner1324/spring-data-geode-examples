@@ -7,7 +7,7 @@ This project provides a number of examples to get you started using Spring Data 
 * **Server Config** - These examples demonstrate the configuration of servers. This includes regions, persistence, wan, subscriptions, functions and indexes.
 * **Advanced** - These examples are to show case how higher-level use cases are solved.
 
-It is important to note that all examples will follow the prescribed Maven directory structure. Also, all examples will have both a Java and [Kotlin](http://kotlinlang.org) implementation. 
+It is important to note that all examples will follow the prescribed Maven directory structure.
 
 # Client Server examples
 These examples are primarily focused on the client-side configuration and functionality, rather than that of the deployed server. The deployed server will be setup with the minimum required configuration to fulfill the requirements of the examples.

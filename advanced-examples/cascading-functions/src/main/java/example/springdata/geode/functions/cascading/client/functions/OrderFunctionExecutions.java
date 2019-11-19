@@ -1,6 +1,6 @@
 package example.springdata.geode.functions.cascading.client.functions;
 
-import example.springdata.geode.functions.cascading.kt.domain.Order;
+import example.springdata.geode.functions.cascading.domain.Order;
 import org.springframework.data.gemfire.function.annotation.FunctionId;
 import org.springframework.data.gemfire.function.annotation.OnServers;
 

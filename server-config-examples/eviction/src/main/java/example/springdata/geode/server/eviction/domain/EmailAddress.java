@@ -16,8 +16,6 @@
 
 package example.springdata.geode.server.eviction.domain;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serializable;
 
 /**
@@ -38,7 +36,7 @@ public class EmailAddress implements Serializable {
 		return value;
 	}
 
-	public boolean equals(@Nullable Object other) {
+	public boolean equals(Object other) {
 		if (this != other) {
 			if (other instanceof EmailAddress) {
 				EmailAddress emailAddress = (EmailAddress) other;
