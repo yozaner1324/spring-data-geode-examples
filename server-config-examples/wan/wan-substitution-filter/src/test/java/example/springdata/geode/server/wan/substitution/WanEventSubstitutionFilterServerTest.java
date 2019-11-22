@@ -1,13 +1,13 @@
 package example.springdata.geode.server.wan.substitution;
 
-import example.springdata.geode.server.wan.client.config.WanClientConfig;
-import example.springdata.geode.server.wan.domain.Customer;
 import org.apache.geode.cache.Region;
+
+import example.springdata.geode.server.wan.substitution.config.WanClientConfig;
+import example.springdata.geode.server.wan.substitution.domain.Customer;
 import org.awaitility.Awaitility;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

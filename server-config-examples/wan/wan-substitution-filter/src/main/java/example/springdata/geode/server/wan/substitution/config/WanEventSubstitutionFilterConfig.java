@@ -1,9 +1,7 @@
 package example.springdata.geode.server.wan.substitution.config;
 
-
-import example.springdata.geode.server.wan.config.WanEnabledServerCommonConfig;
-import example.springdata.geode.server.wan.server.siteA.config.SiteAWanEnabledServerConfig;
 import example.springdata.geode.server.wan.substitution.filter.WanEventSubstitutionFilter;
+import example.springdata.geode.server.wan.substitution.server.siteA.config.SiteAWanEnabledServerConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

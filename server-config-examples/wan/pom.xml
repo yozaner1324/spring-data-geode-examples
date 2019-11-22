@@ -12,32 +12,10 @@
     <artifactId>wan</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>wan-basic</module>
         <module>wan-event-filters</module>
         <module>wan-transport-filters</module>
 		<module>wan-substitution-filter</module>
 	</modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-geode</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.shiro</groupId>
-                    <artifactId>shiro-spring</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <version>3.1.6</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>
