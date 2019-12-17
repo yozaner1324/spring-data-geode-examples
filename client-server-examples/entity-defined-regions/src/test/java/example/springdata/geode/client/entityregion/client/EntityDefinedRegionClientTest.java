@@ -2,8 +2,8 @@ package example.springdata.geode.client.entityregion.client;
 
 import example.springdata.geode.client.entityregion.client.config.EntityDefinedRegionClientConfig;
 import example.springdata.geode.client.entityregion.client.repo.CustomerRepository;
-import example.springdata.geode.client.entityregion.domain.Customer;
-import example.springdata.geode.client.entityregion.domain.EmailAddress;
+import example.springdata.geode.client.entityregion.client.domain.Customer;
+import example.springdata.geode.client.entityregion.client.domain.EmailAddress;
 import example.springdata.geode.client.entityregion.server.EntityDefinedRegionServer;
 import org.apache.geode.cache.Region;
 import org.junit.BeforeClass;

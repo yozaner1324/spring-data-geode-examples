@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package example.springdata.geode.client.entityregion.domain;
+package example.springdata.geode.client.entityregion.client.domain;
 
 import java.io.Serializable;
 
