@@ -13,3 +13,5 @@ The example is broken up into multiple steps:
 Your test output should contain the following:
 
     Inserting 4000 Customers into compressed region
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

@@ -17,3 +17,9 @@ Your test output should contain output similar to the following:
     [FORK] - Inserting 301 entries on siteA
     
     301 entries replicated to siteB
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.
+
+NOTE: Currently all tests in wan are marked with `@Ignore` so they WILL NOT run. This is because the tests start multiple 
+servers and are unable to shut them down properly, meaning they may interfere with other tests run after them. You may 
+remove the `@Ignored` to run the tests, but be advised that you may have to manually kill the server process(es) after.

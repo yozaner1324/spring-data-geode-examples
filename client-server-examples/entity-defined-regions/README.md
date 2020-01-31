@@ -35,3 +35,5 @@ Your output from the test `customerRepositoryWasAutoConfiguredCorrectly` should 
      		 Customer(id=1, emailAddress=EmailAddress(value=2@2.com), firstName=John, lastName=Smith)
     	 Entry: 
      		 Customer(id=2, emailAddress=EmailAddress(value=4@4.com), firstName=Sam, lastName=Spacey)
+ 
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

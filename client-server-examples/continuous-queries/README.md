@@ -24,3 +24,5 @@ Your output from the test `continuousQueryWorkingCorrectly` should look similar 
     Received message for CQ 'CustomerCQ'CqEvent [CqName=CustomerCQ; base operation=CREATE; cq operation=CREATE; key=1; value=Customer(id=1, emailAddress=EmailAddress(value=2@2.com), firstName=John, lastName=Smith)]
     Received message for CQ 'CustomerCQ'CqEvent [CqName=CustomerCQ; base operation=CREATE; cq operation=CREATE; key=2; value=Customer(id=2, emailAddress=EmailAddress(value=3@3.com), firstName=Frank, lastName=Lamport)]
     Received message for CQ 'CustomerCQ'CqEvent [CqName=CustomerCQ; base operation=CREATE; cq operation=CREATE; key=3; value=Customer(id=3, emailAddress=EmailAddress(value=5@5.com), firstName=Jude, lastName=Simmons)]
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.

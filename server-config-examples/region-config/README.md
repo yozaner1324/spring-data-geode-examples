@@ -19,3 +19,5 @@ Your test output should contain output similar to the following:
     There are 3001 customers
     There are 3 products
     There are 100 orders
+    
+NOTE: Inorder to see output, you must change the loglevel from "error" to "info" in the `logback.xml` file located under src/test/resources.
